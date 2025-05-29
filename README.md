@@ -1,6 +1,6 @@
-## Welcome to the most tremendous exoplanet transit animator. 
+## Welcome to the most tremendous exoplanet transit animator 
 
 
-[Website Link](https://www.planetsinmotion.live/)
+[https://www.planetsinmotion.live](https://www.planetsinmotion.live/)
 
 
