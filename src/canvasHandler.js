@@ -16,13 +16,13 @@ export class CanvasHandler {
         // Append the SVG object to the container
         this.svgRoot = d3
             .select("#" + id)
-            .append("svg").attr("style:cursor", "pointer")
+            .append("svg")
             .attr("width", this.width + this.margin.left + this.margin.right)
             .attr("height", this.height + this.margin.top + this.margin.bottom)
             
             
         this.svg = this.svgRoot.append("g")
-            .attr("transform", `translate(${this.margin.left},${this.margin.top})`);
+            .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
 
         this.outputname = outputname;
     }
