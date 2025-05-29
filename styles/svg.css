@@ -28,6 +28,10 @@
             font-size: 24px;
             font-family: "DejaVu Sans", sans-serif;
         }
+        
+        svg {
+            cursor:pointer;
+        }
 
 
           /* Make all axis text bigger and cleaner */

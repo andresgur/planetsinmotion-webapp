@@ -415,7 +415,19 @@ export class PlanetMenu {
             }
         };
 
+        
+        // click ouside of the area listener
+        this.closeOnOutsideClickListener = (event) => {
+            // Close the about section if the click is outside its content
+            if (this.planetForm && !this.planetForm.querySelector(".planet-form-content").contains(event.target)) {
+                this.cancelPlanetBtn.click();
+            }
+        };
+        
         document.addEventListener('keydown', this.keydownListener);
+        setTimeout(() => {
+            document.addEventListener("click", this.closeOnOutsideClickListener);
+        }, 0);
 
     }
 
@@ -462,7 +474,13 @@ export class PlanetMenu {
             document.removeEventListener("keydown", this.keydownListener);
             this.keydownListener = null; // Clear the reference
         }
+
         this.savePlanetBtn.removeEventListener("click", this.savePlanetListener);
+
+        if (this.closeOnOutsideClickListener) {
+            document.removeEventListener("click", this.closeOnOutsideClickListener);
+            this.closeOnOutsideClickListener = null; // Clear the reference
+        }
 
         if (this.savePlanetListener) {
             this.savePlanetListener = null;
