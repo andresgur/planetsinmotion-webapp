@@ -6,8 +6,10 @@ import { InfoDisplay } from './infoDisplay.js';
 import { LightcurveHandler } from './lightcurveHandler.js';
 import { DonateMenu } from './donateMenu.js';
 import { Transit } from './transit.js';
+import { DoubleTransit } from './doubleTransit.js';
 import { OrbitAnimatorCanvasHandler } from './orbitAnimatorCanvasHandler.js';
 import { MonteCarloTransitCalculator } from './monteCarloTransitCalculator.js';
+import { timeDays } from 'd3';
 
 
 let planetMenu;
@@ -132,6 +134,10 @@ function recalculateEclipse() {
         const transit = new Transit(starMenu.star, planetMenu.planets[0]);
         fraction = transit.visibleFraction;
         lightcurveMenu.mcPointsInput.disabled = true; // Disable MC points input if only one planet
+    } else if (planetMenu.planets.length == 2) {
+        const transit = new DoubleTransit(starMenu.star, planetMenu.planets[0], planetMenu.planets[1]);
+        fraction = transit.visibleFraction;
+        lightcurveMenu.mcPointsInput.disabled = true; // Disable MC points input if only two planets
     } else {
         console.log("Showing modal")
         const recordingDialog = document.getElementById("recording-dialog");
@@ -147,7 +153,9 @@ function recalculateEclipse() {
     }
     //console.timeEnd("getEclipsingAreasMonteCarlo"); // End timing and print result
     
-    console.log("Transit depth: ", (Math.min(...fraction)).toFixed(3));
+    const argmin = fraction.indexOf(Math.min(...fraction));
+    const timeMin = lightcurveMenu.timesDays[argmin];
+    console.log("Transit depth: ", (Math.min(...fraction)).toFixed(3) + " at " + timeMin.toFixed(2) + " days");
 }
 
 function onMcPointsUpdate() {
@@ -264,7 +272,6 @@ function init() {
             planetMenu.showPlanetForm();
         }
     });
-
     exportButton.addEventListener("click", () => {
         lightcurveMenu.exportLightcurve(lightcurveMenu.timesDays, fraction)
     });

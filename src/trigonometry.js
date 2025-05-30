@@ -1,4 +1,4 @@
-import { sin, cos, asin, acos, atan2, atan, sqrt } from 'mathjs';
+import { sin, cos, asin, acos, atan, sqrt } from 'mathjs';
 
 /**
  * Computes the angle alpha.
@@ -127,25 +127,54 @@ function pizza_triangle(R, half_angle) {
     const area =  R**2 * (half_angle - cos(half_angle) * sin(half_angle));
     return area;
 }
-
-
-function triangle_area(a, b, c){
-    /**Calculate the area of a triangle give the lenght of its side. This is Heron's formula
-    a: array-like or float,
-        Length of side 1
-    b:array-like or float
-        Length of side 2
-    c: array-like or float
-        Length of side 3
+    /**
+     * Calculate one of the sub area (of a total of three) forming the overlapping area of three circles during partial-partial-partial transits  
+    * @param {number} Rs - Radius of the star or eclipsed object (associated with alpha).
+    * @param {number} Rp1 - Radius of the first planet (planet 1).
+    * @param {number} Rp2 - Radius of the second planet (planet 2).
+    * @param {Array<number>} p1 - Point of contact between the two circles (planet 1 and planet 2) as [x, y].
+    * @param {Array<number>} p2 - Point of contact between the second planet and the star as [x, y].
+    * @param {Array<number>} p3 - Point of contact between the star and the first planet as [x, y].
+    * @returns {number} - The calculated overlapping area of the three circles.
     */
-    s = (a + b + c) / 2.;
-    area = sqrt(s* (s- a) * (s - b) * (s - c));
+
+export function circle_circle_circle_area(Rs, Rp1, Rp2, p1, p2, p3) {
+
+    const d1 = getDistance(p1, p2);
+    const d2 = getDistance(p2, p3);
+    const d3 = getDistance(p3, p1);
+
+    const theta1 = cos_law(Rp1, Rp1, d1);
+    const theta2 = cos_law(Rp2, Rp2, d3);
+    const theta3 = cos_law(Rs, Rs, d2);
+    
+    // pizza - triangles
+    const areaPlanet1 = pizza_triangle(Rp1, theta1 / 2);
+    const areaPlanet2 = pizza_triangle(Rp2, theta2 / 2);
+    const areaStar = pizza_triangle(Rs, theta3 / 2);
+    
+    // central triangle;
+    const triangle = triangle_area(d1, d2, d3);
+    const area = areaPlanet1 + areaPlanet2 + areaStar + triangle;
+    return area;
+}
+/**
+ * Calculates the area of a triangle given the lengths of its sides using Heron's formula.
+ *
+ * @param {number} a - Length of side 1.
+ * @param {number} b - Length of side 2.
+ * @param {number} c - Length of side 3.
+ * @returns {number} - The area of the triangle.
+ */
+function triangle_area(a, b, c){
+    const s = (a + b + c) / 2.;
+    const area = sqrt(s* (s- a) * (s - b) * (s - c));
     return area;
 }
 
 
 function cos_law(a, b, c) {
-    gamma = acos((a**2 + b**2 - c**2) / (2 * a * b));
+    const gamma = acos((a**2 + b**2 - c**2) / (2 * a * b));
     return gamma;
 
 }

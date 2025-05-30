@@ -1,7 +1,6 @@
-import { sqrt, atan2, sin, cos} from 'mathjs';
-import { getBeta, getTransitArea, getDistance } from './trigonometry.js'
+import { sqrt} from 'mathjs';
+import { getTransitArea, getDistance } from './trigonometry.js'
 import { linspace } from './utils.js';
-import { Transit } from './transit.js';
 
 
 export class Body {
@@ -350,21 +349,4 @@ export class Body {
 
     }
 
-    getContactPoints(planet, index) {
-        const beta = getBeta(this._R, planet._R, planet.ry[index], planet.rz[index], this.ry[index], this.rz[index]);
-        const ry = planet.ry[index]
-        const rz = planet.rz[index]
-        const phi = atan2(rz, ry)
-        const origin = (ry, rz)
-        const point_up = (pointy(origin[0], 1, planet._R, beta, phi), pointz(origin[1], 1, planet._R, beta, phi))
-        const point_down = (pointy(origin[0], -1, planet._R, beta, phi), pointz(origin[1], -1, planet._R, beta, phi))
-        return (point_up, point_down)
-    }
-
-    pointy(origin, R, sign, beta, phi) {
-        return origin - R * cos(beta + sign * phi)
-    }
-    pointz(origin, R, sign, beta, phi) {
-        return origin - sign * R * sin(beta + sign * phi)
-    }
 }
