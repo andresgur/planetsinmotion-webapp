@@ -58,7 +58,6 @@ export class InfoDisplay {
     }
 
     closeWindow(content) {
-        console.log("Closing " + content);
         content.classList.add("hidden")
         content.blur()
         if (this.keydownListener) {
