@@ -1,6 +1,6 @@
-import { getTransitArea} from './trigonometry.js'
+import { getTransitArea, getBeta} from './trigonometry.js'
 import { Body } from './body.js';
-
+import {atan2, sin, cos} from 'mathjs';
 
 export class Transit {
     /**
@@ -16,18 +16,18 @@ export class Transit {
         this.eclipsingBody = eclipsingBody;
         this.checkFront = checkFront;
         this.datapoints = eclipsingBody.rx.length;
+        [this.fullTransitIndexes, this.partialTransitIndexes ] = this.getTransits(this.eclipsingBody, this.eclipsedBody, this.checkFront);
         this.workoutTransits()
-
+        
     }
-
+    
     workoutTransits() {
-        const [fullTransitIndexes, partialTransitIndexes ] = this.getTransits(this.eclipsingBody, this.eclipsedBody, this.checkFront);
-        console.log("Number of full transits: ", fullTransitIndexes.length);
-        console.log("Number of partial transits: ", partialTransitIndexes.length);
-        this.eclipsedArea = this.getEclipsedArea(fullTransitIndexes, partialTransitIndexes)
+        console.log("Number of full transits: ", this.fullTransitIndexes.length);
+        console.log("Number of partial transits: ", this.partialTransitIndexes.length);
+        this.eclipsedArea = this.getEclipsedArea(this.fullTransitIndexes, this.partialTransitIndexes)
         this.visibleFraction = this.eclipsedArea.map(area => 1 - area / this.eclipsedBody.Area)
 
-        this.transitDuration = partialTransitIndexes.length + fullTransitIndexes.length;
+        this.transitDuration = this.partialTransitIndexes.length + this.fullTransitIndexes.length;
 
         this.transitDepth = Math.max(...this.eclipsedArea) / this.eclipsedBody.Area;
         
@@ -82,6 +82,30 @@ export class Transit {
             (star.getProjectedDistance(body, i) + body._R >= star._R)
         );
         return [fullTransitIndices, partialTransitIndices];
+    }
+
+    /**
+     * Get the contact points between the transiting body and the eclipsed body at a given index.
+     * @param {Number} index 
+     * @returns 
+     */
+    getContactPoints(index) {
+        const beta = getBeta(this.eclipsedBody._R, this.eclipsingBody._R, this.eclipsingBody.ry[index], 
+            this.eclipsingBody.rz[index], this.eclipsedBody.ry[index], this.eclipsedBody.rz[index]);
+        const ry = this.eclipsingBody.ry[index];
+        const rz = this.eclipsingBody.rz[index];
+        const phi = atan2(rz - this.eclipsedBody.rz[index], ry - this.eclipsedBody.ry[index]);
+        const origin = [ry, rz]
+        const point_up = [this.pointy(origin[0], 1, beta, phi), this.pointz(origin[1], 1, beta, phi)];
+        const point_down = [this.pointy(origin[0], -1, beta, phi), this.pointz(origin[1], -1, beta, phi)];
+        return [point_up, point_down]
+    }
+
+    pointy(origin, sign, beta, phi) {
+        return origin - this.eclipsingBody._R * cos(beta + sign * phi);
+    }
+    pointz(origin, sign, beta, phi) {
+        return origin - sign * this.eclipsingBody._R * sin(beta + sign * phi);
     }
 
 
