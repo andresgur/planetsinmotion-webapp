@@ -236,7 +236,7 @@ export class Planet extends Body {
         const a = getSemiMajorAxis(star.M, M * this.Munits, P * DaysToSeconds)
         const rmin = a * (1 - e)
         if ((rmin - R * this.Runits) < star.R) {
-            throw new StarPlanetDistanceError(rmin, star.R)
+            throw new StarPlanetDistanceError(rmin, star.R);
         }
     }
     /**
@@ -246,8 +246,8 @@ export class Planet extends Body {
  */
     setStar(star) {
 
-        this.Ms = star.M
-        this.Rs = star.R
+        this.Ms = star.M;
+        this.Rs = star.R;
 
     }
 
@@ -257,11 +257,13 @@ export class Planet extends Body {
          * ----------
          * @param {Array} times - Times
          */
-        const M = meanAnomaly(times, 2 * pi / this._P, 0);
+        const t_periastron = 1 - this.phase0 * this._P;
+
+        const M = meanAnomaly(times, 2 * pi / this._P, t_periastron);
 
         const E = M.map(M_i => solveEccentricAnomaly(M_i, this._e));
 
-        const nu = trueAnomaly(this._e, E, this.phase0)
+        const nu = trueAnomaly(this._e, E)
 
         const r = getRadialDistance(this._a, this._e, nu);
 
