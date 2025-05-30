@@ -1,5 +1,5 @@
 import { pi, sqrt, sin, cos, tan, atan } from 'mathjs';
-import { Gcgs, AU } from './constants';
+import { Gcgs } from './constants';
 /**
  * Computes the true anomaly.
  *
@@ -7,8 +7,8 @@ import { Gcgs, AU } from './constants';
  * @param {number} E - Mean anomaly.
  * @returns {number} - The true anomaly in radians.
  */
-export function trueAnomaly(e, E, phase0 = 0) {
-    return E.map((E_i) => ( (2 * atan(sqrt((1 + e) / (1 - e)) * tan(E_i / 2))) % (2 * pi)) + 2 * pi * phase0);
+export function trueAnomaly(e, E) {
+    return E.map(E_i => ( (2 * atan(sqrt((1 + e) / (1 - e)) * tan(E_i / 2))) % (2 * pi) ) );
 }
 
 /**
