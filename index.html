@@ -20,12 +20,6 @@
 </head>
 
 <body>
-    <!-- Top Banner -->
-    <div class="top-banner">
-        <button id="manual-button" class="banner-button">Manual</button>
-        <button id="donate-button" class="banner-button">Donate</button>
-        <button id="about-button" class="banner-button">About</button>
-    </div>
     <div class="main-container">
         <!-- Left Menus -->
         <div class="left-menu-container">
@@ -50,8 +44,7 @@
                         <div for="mc-points" class="tooltip">Points (10<sup>3</sup>):
                             <span class="tooltiptext" id="tooltip-mc-points"></span>
                         </div>
-                        <input type="number" min="500" max="1000000000" value="5000" step="500"
-                            id="input-mc-points">
+                        <input type="number" min="500" max="1000000000" value="5000" step="500" id="input-mc-points">
                     </div>
                     <button id="export-lightcurve">Export</button>
                 </div>
@@ -80,34 +73,34 @@
         </div>
         <!-- Canvases -->
         <div class="main-canvas-container" id="main-canvas-container">
-            <div id="toggle-animation-feedback" class="copy-feedback"></div>
             <div class="top-canvas-container">
+                <div id="toggle-animation-feedback" class="copy-feedback"></div>
                 <div class="axis-canvas-container">
                     <!-- Y-axis label-->
-                    <label class="x-axis-label y-axis-label">z (AU)</label>
+                    <label class="y-axis-label">z (AU)</label>
                     <div class="x-axis-column-container">
                         <label class="canvas-title">Edge-on</label>
-                        <div id="edgeoncanvas"></div>
-                        <label class="x-axis-label">y (AU)</label>
+                        <div id="edgeoncanvas" class="svg-container-orbit"></div>
+                        <label>y (AU)</label>
                     </div>
                 </div>
                 <div class="axis-canvas-container">
-                    <label class="x-axis-label y-axis-label">x (AU)</label>
+                    <label class="y-axis-label">x (AU)</label>
                     <div class="x-axis-column-container">
                         <label class="canvas-title">Face-on</label>
                         <!-- <canvas id="faceoncanvas" width="600px" height="600px"></canvas>-->
-                        <div id="faceoncanvas"></div>
-                        <label class="x-axis-label">y (AU)</label>
+                        <div id="faceoncanvas" class="svg-container-orbit"></div>
+                        <label>y (AU)</label>
                     </div>
                 </div>
             </div>
-                <div class="axis-canvas-container">
-                    <label class="x-axis-label y-axis-label">Relative Flux (%)</label>
-                    <div class="x-axis-column-container">
-                        <div id="d3-lightcurve-container"></div>
-                        <label class="x-axis-label">Time (Days)</label>
-                    </div>
+            <div class="lightcurve-canvas-container">
+                <label class="y-axis-label">Relative Flux (%)</label>
+                <div class="x-axis-column-container">
+                    <div id="d3-lightcurve-container" class="svg-container"></div>
+                    <label>Time (Days)</label>
                 </div>
+            </div>
         </div>
 
         <div class="menu-container">
@@ -147,9 +140,15 @@
 
 
         </div>
-        
-    </div>
 
+
+    </div>
+    <!-- Top Banner -->
+    <div class="bottom-banner">
+        <button id="manual-button" class="banner-button">Manual</button>
+        <button id="donate-button" class="banner-button">Donate</button>
+        <button id="about-button" class="banner-button">About</button>
+    </div>
     <div id="planet-form" class="planet-form hidden">
         <div class="planet-form-content">
             <!-- Close Button -->
@@ -179,14 +178,14 @@
                             </div>
                             <div class="menu-row">
                                 <div class="tooltip">
-                                    <label  id="planet-mass-label" for="planet-mass-input"></label>
+                                    <label id="planet-mass-label" for="planet-mass-input"></label>
                                     <span class="tooltiptext" id="tooltip-planet-mass"></span>
                                 </div>
                                 <input id="planet-mass-input" type="number" min="0.001" step="0.01" value="1"
                                     max="2000" />
                             </div>
                             <div class="menu-row">
-                                <div class="tooltip" >
+                                <div class="tooltip">
                                     <label id="planet-radius-label" for="planet-radius-input"></label>
                                     <span class="tooltiptext" id="tooltip-planet-radius"></span>
                                 </div>
@@ -244,8 +243,8 @@
                     </div>
                 </div>
                 <div class="planet-form-canvas">
-                    <canvas id="planet-canvas"  width="300px" height="300px"></canvas>
-                    <canvas id="lightcurve-canvas-planet-form" width="300px"
+                    <canvas id="planet-canvas" style="cursor: auto;" width="300px" height="300px"></canvas>
+                    <canvas id="lightcurve-canvas-planet-form" style="cursor: auto;" width="300px"
                         height="100px"></canvas>
                     <div id="container" class="orbit-parameters-section">
                         <div class="menu-row-planet-form">
@@ -269,17 +268,6 @@
                         </div>
                     </div>
                     <label class="planet-form-error-message" id="transit-error">No transit!</label>
-
-                    <!--
-                    <div class="menu" style="background-color: black;">
-                    <div class="menu-row">
-                        
-                        <label for="log-scale">log-scale</label>
-                        <input id="planet-form-log-scale" type="checkbox" onclick='updateLogScale(this);'>
-
-                    </div>
-                </div>
-                -->
                 </div>
             </div>
             <label class="planet-form-error-message" id="planet-error"></label>
@@ -296,7 +284,8 @@
                 <div class="autor-container">
                     <div class="autor-text-container">
                         <label><strong>Author:</strong> Andrés Gúrpide Lasheras</label>
-                        <label><strong>Website:</strong><a target="_blank" rel="noopener noreferrer" href="https://www.andresgurpide.com"> www.andresgurpide.com
+                        <label><strong>Website:</strong><a target="_blank" rel="noopener noreferrer"
+                                href="https://www.andresgurpide.com"> www.andresgurpide.com
                             </a></label>
                         <label><strong>Contact:</strong> andres.gurpide.astro@gmail.com</label>
                     </div>

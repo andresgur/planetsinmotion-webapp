@@ -3,14 +3,13 @@ import { CanvasHandler } from "./canvasHandler";
 import { AU } from "./constants";
 import { Star } from "./star";
 import {darkenColor} from './utils.js';
-import * as d3 from "d3";
 
 export class OrbitAnimatorCanvasHandler extends CanvasHandler {
 
-    constructor(id, outputname, width = 600, height = 600, margins = { top: 20, bottom: 40, left: 60, right: 40 }) {
-        super(id, width, height, margins, outputname)
+    constructor(id, outputname, margins = { top: 20, bottom: 40, left: 60, right: 40 }) {
+        super(id, margins, outputname)
 
-        this.units = AU
+        this.units = AU;
     }
 
     defineSunGradient(starColor) {
