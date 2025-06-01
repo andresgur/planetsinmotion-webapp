@@ -206,8 +206,8 @@ function onUpdatePlanets() {
 function init() {
 
     if (!lightcurveHandler) {
-        const margin = { top: 10, bottom: 40, left: 80, right: 80 } // checked
-        lightcurveHandler = new LightcurveHandler("d3-lightcurve-container", 1320, 500, margin)
+        const margin = { top: 10, bottom: 40, left: 80, right: 10 } // checked
+        lightcurveHandler = new LightcurveHandler("d3-lightcurve-container", margin)
     }
 
     if (!faceOnCanvasHandler) {

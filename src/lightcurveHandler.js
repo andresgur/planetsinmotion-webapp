@@ -2,8 +2,8 @@ import * as d3 from "d3";
 import { CanvasHandler } from "./canvasHandler";
 export class LightcurveHandler extends CanvasHandler {
 
-    constructor(id, width, height, margins) {
-        super(id, width, height, margins, "lightcurve")
+    constructor(id, margins) {
+        super(id, margins, "lightcurve")
         this.xvalues = null
         this.yvalues = null
     }
