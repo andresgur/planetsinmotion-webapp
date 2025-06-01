@@ -1,5 +1,22 @@
 
 
+
+        body {
+            /* Top margin with the browser menu */
+            min-height: 100vh;
+            height: 100vh;
+            background-color: black;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start; /* stick content to the top */
+            height: 100%;
+            justify-content: space-between; /* spread items across the width with the menus on the sides*/
+            /* Left menu + Main content + menu */
+            gap: 5px;
+        }
         #buttonWrapper {
             position: absolute;
             width: 30px;
@@ -48,47 +65,9 @@
 
         .hidden {
             display: none;
-        }
-        body {
-            justify-content: center;
-            align-items: center;
-            margin: 1px;
-            /* Top margin with the browser menu */
-            height: 100vh;
-            /* Full viewport height */
-            width: 99.9vw;
-            ;
-            background-color: black;
-        }
-
-        .main-container {
-            display: grid;
-            grid-template-columns: 1fr 6fr 1fr;
-            /* Left menu + Main content + menu */
-            gap: 5px;
-            /* Space between columns */
-            height: 100%;
-            /* Full height of the viewport */
-            width: 100%;
-            /* Full width of the viewport */
-            padding: 10px;
-            /* A bit of room between the screen edges and the content */
-            box-sizing: border-box;
-            /* Include padding and border in the element's total width */
-        }
-
-        .main-canvas-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px; /* Space between top and bottom canvas */
-        }
-
-        .top-canvas-container {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 5px;/* Space between the two top canvases */
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
 
@@ -109,6 +88,7 @@
 
         .left-menu-container,
         .menu-container {
+            flex:2;
             display: flex;
             flex-direction: column;
             color: white;
@@ -254,13 +234,6 @@
         }
 
 
-        .y-axis-label {
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-        }
 
         .button-cursor {
             cursor: pointer;

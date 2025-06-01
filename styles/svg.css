@@ -1,41 +1,100 @@
+.main-canvas-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Full height of the parent container */
+    width: 100%;
+    color: white;
+    font-size: 22px;
+    flex:10;
+}
+
+/* this contains the two canvas and its in row formation*/
+.top-canvas-container {
+    flex-direction: row;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;/* Center the two canvases horizontally */
+    align-items: center;/*vertical alignment */
+}
+
 
         /* Outer container for y-axis, canvas, and x-axis */
-        .axis-canvas-container {
-            display: flex;
-            font-size: 22px;
-            display: flex;
-            flex-direction: row;
-            /* Arrange y-axis and row-container horizontally */
-            align-items: center;
-            justify-content: center;
-            color: white;
-            gap: 5px;/* Space between x-axis and canvas */
-            width: 100%;
-            height: 100%;
-        }
+.axis-canvas-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    /* Vertical alignment of y-axis and canvas */
+    justify-content: center;
+    /* Center the content horizontally */
+    /* Arrange y-axis and row-container horizontally */
+}
 
-        /* Row container for canvas and x-axis */
-        .x-axis-column-container {
-            display: flex;
-            flex-direction: column;
-            /* Arrange canvas and x-axis vertically */
-            align-items: center;
-            justify-content: center;
-            gap: 0px; /* Space between canvas and top label and y-axis */
-        }
+/* Outer container for y-axis, canvas, and x-axis */
+.lightcurve-canvas-container {
+    /*flex: 1 1 50%;*/
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 18px; /*seems necessary to avoid x axis overflowing */
+    align-items: center;
+    justify-content: center;
+    /* Vertical alignment of y-axis and canvas */
+    /* Arrange y-axis and row-container horizontally */
 
-        .canvas-title {
-            font-size: 24px;
-            font-family: "DejaVu Sans", sans-serif;
-        }
-        
-        svg {
-            cursor:pointer;
-        }
+}
+
+/* Row container for canvas and x-axis */
+.x-axis-column-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center the x-axis below the canvas */
+    justify-content: center;
+    /* Center the x-axis below the canvas */
+    /* Arrange canvas and x-axis vertically */
+}
+
+.y-axis-label {
+    margin-bottom: 40px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+}
+
+.canvas-title {
+    margin-left: 80px;
+    font-size: 24px;
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+.svg-container {
+    width: 100%;
+    height: 100%;
+}
+
+.svg-container-orbit {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.svg-container-orbit-ss {
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+    cursor: pointer;
+}
 
 
-          /* Make all axis text bigger and cleaner */
-        /*  .axis path,
+/* Make all axis text bigger and cleaner */
+/*  .axis path,
           .axis line {
               stroke: white;
               stroke-width: 2;
@@ -44,13 +103,13 @@
   
           .axis text {
               font-size: 22px; /* Bigger font for tick labels */
-         /*     fill: white;
+/*     fill: white;
               font-family: "DejaVu Sans";
           }
          */
-          /* Optionally style your lightcurve line too */
-          .line {
-              fill: none;
-              stroke-linejoin: round;
-              stroke-linecap: round;
-          }
+/* Optionally style your lightcurve line too */
+.line {
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}

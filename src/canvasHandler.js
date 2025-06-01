@@ -6,12 +6,20 @@ const DOMAIN_NAME = "planetsinmotion.live";
 
 export class CanvasHandler {
 
-    constructor(id, width, height, margins, outputname) {
+    constructor(id, margins, outputname) {
         this.margin = margins;
-        this.width = width - this.margin.left - this.margin.right;
-        this.height = height - this.margin.top - this.margin.bottom;
-        this.units = 1
-        this.fontsize = 18
+        this.units = 1;
+        this.fontsize = 18;
+        /*
+        this.margin.left = 80;
+        this.margin.right = 10;
+        this.margin.top = 10;
+        this.margin.bottom = 40;
+        */
+
+
+        this.width = document.getElementById(id).offsetWidth - this.margin.left - this.margin.right;
+        this.height = document.getElementById(id).offsetHeight - this.margin.top - this.margin.bottom;
 
         // Append the SVG object to the container
         this.svgRoot = d3
@@ -24,6 +32,7 @@ export class CanvasHandler {
         this.svg = this.svgRoot.append("g")
             .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
 
+
         this.outputname = outputname;
     }
 
@@ -31,8 +40,8 @@ export class CanvasHandler {
     setDomains(minx, maxx, miny, maxy, inverty = false) {
         this.svg.selectAll(".axis").remove();
 
-        const domainx  = [minx/this.units, maxx/ this.units]
-        const domainy = [miny/this.units, maxy/ this.units]
+        const domainx  = [minx/this.units, maxx/ this.units];
+        const domainy = [miny/this.units, maxy/ this.units];
 
         // Create the x-axis scale (time in days)
         this.xScale = d3
