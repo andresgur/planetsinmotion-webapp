@@ -48,7 +48,7 @@ function betaFunc(beta_i, ry_cosy, Rs, Rp) {
  * @param {number} [errTol=0.001] - Error tolerance for the solution.
  * @returns {Array} - The solved angle beta for each input.
  */
-export function solveBeta(dy, dz, Rs, Rp, errTol = 0.001){
+export function solveBeta(dy, dz, Rs, Rp, errTol = 0.001, max_N = 100) {
         let betaA = 0;
         let betaB = Math.PI;
         const phi = atan(dz / dy);
@@ -67,7 +67,7 @@ export function solveBeta(dy, dz, Rs, Rp, errTol = 0.001){
         let err = (betaB - betaA) / 2;
         let fA = betaFunc(betaA, dy_cosphi, Rs, Rp);
 
-        while ((err > errTol) && (fC !== 0)) {
+        for (let i = 0; i < max_N; i++) {
             betaC = (betaA + betaB) / 2;
             fC = betaFunc(betaC, dy_cosphi, Rs, Rp);
             if (fC * fA < 0) {
@@ -77,8 +77,11 @@ export function solveBeta(dy, dz, Rs, Rp, errTol = 0.001){
                 fA = fC;
             }
             err = (betaB - betaA) / 2;
+            if (err < errTol || fC === 0) {
+                return betaC;
+            }
         }
-        return (betaA + betaB) / 2;
+        return null; // Return null if no solution is found
     }
 
 /**
@@ -89,8 +92,8 @@ function findInitBeta(init_beta, ry_cosphi, Rs, Rp) {
     let beta_a = init_beta
     let f_a = betaFunc(beta_a, ry_cosphi, Rs, Rp)
     while (isNaN(f_a)) {
-        beta_a += 0.01
-        f_a = betaFunc(beta_a, ry_cosphi, Rs, Rp)
+        beta_a += 0.05;
+        f_a = betaFunc(beta_a, ry_cosphi, Rs, Rp);
     }
     return beta_a
 }
