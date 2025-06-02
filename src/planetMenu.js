@@ -373,7 +373,7 @@ export class PlanetMenu {
             this.eInput.value = this.planets[index].e;
             this.iInput.value = parseFloat(this.planets[index].i).toFixed(2);
             this.Omega0Input.value = parseFloat(this.planets[index].Omega0).toFixed(2);
-            this.massInput.value = this.planets[index].M;
+            this.massInput.value = parseFloat(this.planets[index].M).toFixed(2);
             this.phaseInput.value = this.planets[index].phase0;
             this.radiusInput.value = this.planets[index].R;
             this.colorInput.value = this.planets[index].color;
