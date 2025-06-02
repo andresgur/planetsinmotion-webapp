@@ -10,17 +10,17 @@ export class CanvasHandler {
         this.margin = margins;
         this.units = 1;
         this.fontsize = 18;
+        
+        this.outputname = outputname;
+        this.id = id;
+        
         /*
         this.margin.left = 80;
         this.margin.right = 10;
         this.margin.top = 10;
         this.margin.bottom = 40;
         */
-
-
-        this.width = document.getElementById(id).offsetWidth - this.margin.left - this.margin.right;
-        this.height = document.getElementById(id).offsetHeight - this.margin.top - this.margin.bottom;
-
+        this.updateDimensions();
         // Append the SVG object to the container
         this.svgRoot = d3
             .select("#" + id)
@@ -31,9 +31,14 @@ export class CanvasHandler {
             
         this.svg = this.svgRoot.append("g")
             .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
+   
+    }
 
-
-        this.outputname = outputname;
+    // Method to update dimensions
+    updateDimensions() {
+        const container = document.getElementById(this.id);
+        this.width = container.offsetWidth - this.margin.left - this.margin.right;
+        this.height = container.offsetHeight - this.margin.top - this.margin.bottom;
     }
 
 
@@ -66,7 +71,7 @@ export class CanvasHandler {
             axisGroup.selectAll("text")
                 .attr("fill", "white")
                 .attr("font-size", `${this.fontsize}px`)
-                .attr("font-family", "DejaVu Sans");
+                .attr("font-family", "DejaVu");
         };
 
         // Bottom x-axis
@@ -114,7 +119,7 @@ export class CanvasHandler {
         this.canvas.width = this.width * 2;
         this.canvas.height = this.height * 2;
         this.ctx = this.canvas.getContext("2d");
-        this.ctx.font = `italic 32px DejaVu Sans`;
+        this.ctx.font = `italic 32px DejaVu`;
         this.ctx.strokeStyle = "white";
         this.ctx.lineWidth = 2;
         var recordedChunks = [];
