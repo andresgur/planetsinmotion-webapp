@@ -1,10 +1,11 @@
 import { R_sun, M_J, AU, DaysToSeconds } from './constants.js';
 import { Planet, PlanetDimensionsError, StarPlanetDistanceError } from './planet.js';
-import { getPeriod } from './orbits.js';
+import { getPeriod, getSemiMajorAxis } from './orbits.js';
 import { linspace, } from './utils.js';
 import { ToolTipLabel } from './toolTipLabel.js';
 import { Transit } from './transit.js';
 import { Units } from './units.js';
+import { random } from 'mathjs';
 
 const iconPlanetsize = 15;
 
@@ -23,10 +24,11 @@ export class PlanetMenu {
 
         // Initialize menu elements
         this.defaultColor = document.getElementById("planet-period").style.color;
-        this.supressedListener = false;
+        this.supressedListener = true;
         this.initPlanetMenu();
         this.createPlanet(); // Create a default planet to avoid null references
         this.defaultPlanet = this.planet;
+        this.supressedListener = false;
         //this.initCanvas()
 
 
@@ -174,6 +176,21 @@ export class PlanetMenu {
             this.supressedListener = false;
         });
 
+        this.beautifulBtn = document.getElementById("beautiful-planet-btn");
+
+        this.beautifulBtn.addEventListener("click", () => {
+            // do not update the orbit with each parameter change, only at the end
+            this.supressedListener = true
+            //Randomize inputs
+            this.beautifulInputs();
+
+            this.errorLabel.classList.remove("hidden")
+            this.createPlanet();
+            this.updateCanvas();
+            // activate the listeners back
+            this.supressedListener = false;
+        });
+
 
         // Tooltip elements
         const OmegaLabel = new ToolTipLabel("longitude-ascending-node");
@@ -234,7 +251,7 @@ export class PlanetMenu {
         }
     }
 
-    updateCanvas(nOrbitTimes = 10000) {
+    updateCanvas(nOrbitTimes = 5000) {
         if (this.planet != null) {
             const datapoints = Math.floor(this.planet.e + 0.01 * (this.planet.P * nOrbitTimes));
             console.log("Updating canvas for " + this.planet.planetName + "with " + datapoints + " datapoints");
@@ -300,8 +317,7 @@ export class PlanetMenu {
         const canvas = document.getElementById("planet-canvas");
 
         const ctx = canvas.getContext("2d");
-
-        const ratio = canvas.width / 2 / (this.planet.maxCoordinate() * 1.1);
+        const ratio = canvas.width / 2 / (this.planet.maxFaceOn() * 1.05 + this.planet._R);
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -408,6 +424,12 @@ export class PlanetMenu {
                 }
             }
 
+            else if ((event.key == "B") || (event.key == "b")) {
+                if (document.activeElement != this.planetNameInput) {
+                    this.beautifulBtn.click();
+                }
+            }
+
             else if ((event.key == "c") || (event.key == "C")) {
                 if (document.activeElement != this.planetNameInput) {
                     this.cancelPlanetBtn.click();
@@ -415,7 +437,7 @@ export class PlanetMenu {
             }
         };
 
-        
+
         // click ouside of the area listener
         this.closeOnOutsideClickListener = (event) => {
             // Close the about section if the click is outside its content
@@ -423,12 +445,71 @@ export class PlanetMenu {
                 this.cancelPlanetBtn.click();
             }
         };
-        
+
         document.addEventListener('keydown', this.keydownListener);
         setTimeout(() => {
             document.addEventListener("click", this.closeOnOutsideClickListener);
         }, 0);
 
+    }
+
+    beautifulInputs() {
+        // Planet
+        // 100 jypyter masses is the max
+        // https://www.google.com/search?q=known+exoplanets+plot&client=ubuntu&hs=pEH&sca_esv=6d30932b12437026&channel=fs&udm=2&biw=1472&bih=741&ei=HCszaIaDO7unhbIPsr2WmAg&ved=0ahUKEwiGgeuk7L6NAxW7U0EAHbKeBYMQ4dUDCBE&uact=5&oq=known+exoplanets+plot&gs_lp=EgNpbWciFWtub3duIGV4b3BsYW5ldHMgcGxvdEiHDVDXBVi0DHABeACQAQCYAckBoAHUBaoBBTAuMy4xuAEDyAEA-AEBmAICoALTAcICCBAAGBMYBxgewgIHEAAYgAQYE8ICBhAAGBMYHsICCBAAGBMYBRgemAMAiAYBkgcFMS4wLjGgB98GsgcDMi0xuAfMAQ&sclient=img#vhid=kPpXBSnE1JE7qM&vssid=mosaic
+        // max mass is around 10, so 20 more than enough
+        const randomNumber = Math.random();
+        const mass = (randomNumber + 1) * 20 * M_J;
+        this.massInput.value = parseFloat( (mass / this.units.M).toFixed(1));
+        // radius go up to about 25 RE but we want to make it look nicer
+        // make it between 0.25 and 0.5 the star radius
+        const radius = 0.2 * (randomNumber + 1) * this.star._R
+        this.radiusInput.value = parseFloat((radius / this.units.R).toFixed(2));
+        // limit eccentricity to 0.8
+        const randome = Math.random() * 0.8;
+        this.eInput.value = parseFloat(randome.toFixed(2));
+
+        // Orbit
+        //use exact radius otherwise we run into rounding errors
+        const rmin = this.star._R + this.radiusInput.value * this.units.R;
+        const a = rmin / (1 - this.eInput.value);
+        // add 1 day (in secs) to minimum period for rounding purposes
+        const minPeriod = getPeriod(this.star._M, mass, a) + DaysToSeconds;
+
+        console.log("Min period: " + (minPeriod / DaysToSeconds).toFixed(2) + " days");
+        // from min period to + 25 days
+        this.periodInput.value = parseFloat((Math.random() * 25 + minPeriod) / DaysToSeconds).toFixed(1);
+        const reala = getSemiMajorAxis(this.star._M, mass, this.periodInput.value * DaysToSeconds);
+        const minr = reala * (1. - this.eInput.value);
+        // ((Rs + Rp)**2/r**2) = sin**2(i)
+        // let's do 80% of the max allowed inclination so the dip is nice and visible
+        const maxi = Math.asin(rmin / minr) / Math.PI * 180 * 0.8;
+        console.log("Maxi: " + maxi.toFixed(2));
+        this.iInput.value = parseFloat((Math.random() * maxi * 2 - maxi).toFixed(2));
+        let simulatedOmega; // keep omega at the borders otherwise very easy not to get a transit
+        let minPhase, maxPhase;
+        if (randomNumber < 0.5) {
+
+            // Map to range [0, 0.3]
+            simulatedOmega = randomNumber * 2 * 0.3;
+            minPhase = Math.max(0.3 - simulatedOmega, 0);
+            maxPhase = Math.min(0.7 - simulatedOmega, 1);
+        }
+        else {
+            // Map to range [0.7, 1]
+            simulatedOmega = 0.7 + (randomNumber - 0.5) * 0.3;
+            minPhase = Math.max(1.3 - simulatedOmega, 0);
+            maxPhase = Math.min(1.7 - simulatedOmega, 1);
+        }
+
+        const phase = minPhase + Math.random() * (maxPhase - minPhase);
+        this.phaseInput.value = parseFloat(phase).toFixed(2);
+
+        this.Omega0Input.value = simulatedOmega.toFixed(2);
+        const sum = phase + simulatedOmega;
+        if (sum < 0.2 || (sum > 0.8 && sum < 1.2)) {
+            throw new Error("Break");
+        }
     }
 
     randomizeInputs() {
@@ -447,13 +528,13 @@ export class PlanetMenu {
 
         // Orbit
         const rmin = this.star._R + this.radiusInput.value * this.units.R;
-        const a  = rmin / (1 - this.eInput.value);
+        const a = rmin / (1 - this.eInput.value);
         const minPeriod = getPeriod(this.star._M, this.massInput.value * this.units.M, a);
 
         console.log("Min period: " + (minPeriod / DaysToSeconds).toFixed(2) + " days");
         this.periodInput.value = Math.floor(randomNumber * 500 + minPeriod / DaysToSeconds);
         this.iInput.value = parseFloat((2 * randomNumber - 1) * 89.9).toFixed(2);
-        
+
         const randomPhase = Math.random();
         this.phaseInput.value = randomPhase.toFixed(2);
         const randomOmega0 = Math.random();

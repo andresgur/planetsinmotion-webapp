@@ -262,6 +262,16 @@ export class Body {
         return Math.max(maxRx, maxRy, maxRz);
     }
 
+        /**
+     * Get the largeest coordinate of the body, useful for screen sizing
+     * @returns {number} - The maximum coordinate of the body
+     */
+    maxFaceOn() {
+        const maxRx = Math.max(...this.rx.map(Math.abs));
+        const maxRy = Math.max(...this.ry.map(Math.abs));
+        return Math.max(maxRy, maxRx);
+    }
+
     /**
      * Numerically calculates the observable area of the star when multiple bodies past across it.
      * @param {Array} planets 

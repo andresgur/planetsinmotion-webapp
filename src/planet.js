@@ -41,7 +41,7 @@ export class Planet extends Body {
         this._b = this._a * sqrt(1 - this._e ** 2);
 
         this._rmax = this.a * (1. + this.e);
-        this.rmin = this.a * (1. - this._e)
+        this.rmin = this.a * (1. - this._e);
         console.log(`Planet max distance: ${(this.rmax / AU).toFixed(3)} AU`);
     }
 
@@ -233,8 +233,8 @@ export class Planet extends Body {
             throw new Error(`Eccentricity ${e} needs to be between 0 and 1!`);
         }
 
-        const a = getSemiMajorAxis(star.M, M * this.Munits, P * DaysToSeconds)
-        const rmin = a * (1 - e)
+        const a = getSemiMajorAxis(star.M, M * this.Munits, P * DaysToSeconds);
+        const rmin = a * (1 - e);
         if ((rmin - R * this.Runits) < star.R) {
             throw new StarPlanetDistanceError(rmin, star.R);
         }
