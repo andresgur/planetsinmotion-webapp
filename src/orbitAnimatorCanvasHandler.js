@@ -6,7 +6,7 @@ import {darkenColor} from './utils.js';
 
 export class OrbitAnimatorCanvasHandler extends CanvasHandler {
 
-    constructor(id, outputname, margins = { top: 20, bottom: 40, left: 60, right: 40 }) {
+    constructor(id, outputname, margins = { top: 10, bottom: 40, left: 80, right: 10 }) {
         super(id, margins, outputname)
 
         this.units = AU;
@@ -56,7 +56,7 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
             var z = 1 / this.units;
 
             if (faceon) {
-                y *= -body.rx[i];
+                y *= body.rx[i];
                 z *= body.rz[i];
             } else {
                 y *= body.rz[i];
