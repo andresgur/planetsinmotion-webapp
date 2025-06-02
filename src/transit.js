@@ -79,7 +79,7 @@ export class Transit {
 
         const partialTransitIndices = inFrontIndices.filter(i =>
             (star.getProjectedDistance(body, i) - body._R < star._R) &&
-            (star.getProjectedDistance(body, i) + body._R >= star._R)
+            (star.getProjectedDistance(body, i) + body._R > star._R)
         );
         return [fullTransitIndices, partialTransitIndices];
     }
