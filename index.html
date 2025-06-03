@@ -8,14 +8,14 @@
     <style>
 
     </style>
-  <script type="module" crossorigin src="./assets/index-C2-_FO4n.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-B44eiS8o.css">
+  <script type="module" crossorigin src="./assets/index-D3FQwL2f.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Bqv8PFt0.css">
 </head>
 
 <body>
     <div class="main-container">
         <!-- Left Menus -->
-        <div class="left-menu-container">
+        <div class="menu-container">
             <!-- Lightcurve Menu -->
             <div class="menu">
                 <div class="menu-section">
@@ -63,6 +63,13 @@
                     <button id="save-animation-btn">Save Animation</button>
                 </div>
             </div>
+
+
+        <div class="buttons-container">
+            <button id="manual-button" class="banner-button">Manual</button>
+            <button id="donate-button" class="banner-button">Donate</button>
+            <button id="about-button" class="banner-button">About</button>
+        </div>
         </div>
         <!-- Canvases -->
         <div class="main-canvas-container" id="main-canvas-container">
@@ -127,7 +134,7 @@
                     <div id="planet-list" class="planet-list">
                         <!-- Planet items will be dynamically added here -->
                     </div>
-                    <button class="button-cursor" id="add-planet-btn">+</button>
+                    <button id="add-planet-btn">+</button>
                 </div>
             </div>
 
@@ -136,7 +143,6 @@
 
 
     </div>
-    <!-- Top Banner -->
     <div id="planet-form" class="planet-form hidden">
         <div class="planet-form-content">
             <!-- Close Button -->
@@ -330,21 +336,19 @@
 
     <!--bc1q4xr9agec3ldug0xezqxy252y3kvqmcz62xr6pm -->
 
-    <dialog id="recording-dialog">
+    <dialog id="recording-dialog" class="full-screen-overlay">
         <div class="recording-content">
             <label>Generating...</label>
             <div class="spinner"></div>
         </div>
     </dialog>
 
-
-
-
-    <div class="bottom-banner">
-        <button id="manual-button" class="banner-button">Manual</button>
-        <button id="donate-button" class="banner-button">Donate</button>
-        <button id="about-button" class="banner-button">About</button>
+    <div id="mc-overlay" class="full-screen-overlay hidden">
+        <div id="mc-message" class="message">Calculating, please wait...</div>
     </div>
+
+
+
 </body>
 
 </html>
