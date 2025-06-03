@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./styles/recording_dialog.css">
     <link rel="stylesheet" href="./styles/information.css">
     <link rel="stylesheet" href="./styles/about.css">
+    <link rel="stylesheet" href="./styles/mcoverlay.css">
     <link rel="stylesheet" href="./styles/top_banner.css">
     <style>
 
@@ -337,12 +338,16 @@
 
     <!--bc1q4xr9agec3ldug0xezqxy252y3kvqmcz62xr6pm -->
 
-    <dialog id="recording-dialog">
+    <dialog id="recording-dialog" class="full-screen-overlay">
         <div class="recording-content">
             <label>Generating...</label>
             <div class="spinner"></div>
         </div>
     </dialog>
+
+    <div id="mc-overlay" class="full-screen-overlay hidden">
+        <div id="mc-message" class="message">Calculating, please wait...</div>
+    </div>
 
 
     <script type="module" src="./src/app.js"></script>

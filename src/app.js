@@ -9,7 +9,6 @@ import { Transit } from './transit.js';
 import { DoubleTransit } from './doubleTransit.js';
 import { OrbitAnimatorCanvasHandler } from './orbitAnimatorCanvasHandler.js';
 import { MonteCarloTransitCalculator } from './monteCarloTransitCalculator.js';
-import { timeDays } from 'd3';
 
 
 let planetMenu;
@@ -47,22 +46,22 @@ async function loadLanguage(lang = "en") {
 // Animate the frames
 const animate = () => {
 
-    const star = starMenu.star
-    const planets = planetMenu.planets
-    const datapoints = lightcurveMenu.datapoints
+    const star = starMenu.star;
+    const planets = planetMenu.planets;
+    const datapoints = lightcurveMenu.datapoints;
 
 
     const bodies = [star, ...planets];
     // Sort bodies for face-on view (z-direction)
     const sortedBodiesFaceOn = bodies.slice().sort((a, b) => a.rz[i] - b.rz[i]);
-    faceOnCanvasHandler.drawBodies(sortedBodiesFaceOn, i, true)
+    faceOnCanvasHandler.drawBodies(sortedBodiesFaceOn, i, true);
     
     // Sort bodies for edge-on view (x-direction)
     const sortedBodiesEdgeOn = bodies.slice().sort((a, b) => a.rx[i] - b.rx[i]);
-    edgeOnCanvasHandler.drawBodies(sortedBodiesEdgeOn, i)
+    edgeOnCanvasHandler.drawBodies(sortedBodiesEdgeOn, i);
 
     //drawLightcurve(linecontext, timesDays, fraction, star.color, i);
-    lightcurveHandler.drawLightcurved3(star.color, i)
+    lightcurveHandler.drawLightcurved3(star.color, i);
     if (record) {
         [edgeOnCanvasHandler, faceOnCanvasHandler, lightcurveHandler].forEach(element => {
             element.updateRecording();
@@ -81,7 +80,6 @@ const animate = () => {
              // Hide the recording dialog
             const recordingDialog = document.getElementById("recording-dialog");
             recordingDialog.close();
-            document.body.style.cursor = "default";
         },50);
 
             console.log("Recording complete.");
@@ -139,18 +137,28 @@ function recalculateEclipse() {
         fraction = transit.visibleFraction;
         lightcurveMenu.mcPointsInput.disabled = true; // Disable MC points input if only two planets
     } else {
-        console.log("Showing modal")
-        const recordingDialog = document.getElementById("recording-dialog");
-        recordingDialog.showModal();
+        console.log("Showing modal...");
+        const mcOverlay = document.getElementById("mc-overlay");
+        const message = document.getElementById("mc-message");
+        message.innerHTML = translations["mc-overlay"];
+
+        mcOverlay.classList.remove("hidden");
         // Monte Carlo calculation for multiple planets
-        //fraction = starMenu.star.getEclipsingAreasMonteCarloPrecompute(planetMenu.planets, lightcurveMenu.mcPoints);
         // Perform the Monte Carlo calculation asynchronously
-        fraction = monteCarloTransitCalculator.getEclipsedFraction(planetMenu.planets);
+        // Use setTimeout to allow the browser to render the dialog before starting the calculation
+        setTimeout(() => {
+            console.log("Starting Monte Carlo calculation...");
+            fraction = monteCarloTransitCalculator.getEclipsedFraction(planetMenu.planets);
+
+            // Close the modal dialog after the calculation is complete
+            mcOverlay.classList.add("hidden");
+            console.log("Monte Carlo calculation complete.");
+        }, 0);
+        
         lightcurveMenu.mcPointsInput.disabled = false; // Enable MC points input
 
-        // Close the modal after the calculation is complete
-        recordingDialog.close();
     }
+
     //console.timeEnd("getEclipsingAreasMonteCarlo"); // End timing and print result
     
     const argmin = fraction.indexOf(Math.min(...fraction));
@@ -179,18 +187,14 @@ function updateSimulation() {
 function onUpdatePlanets() {
     /* Uodate buttons state */
     if (planetMenu.planets.length > 0) {
-        exportButton.disabled = false // Enable the button
-        exportButton.style.cursor = "pointer"
-        frameMenu.saveAnimationButton.disabled = false // Enable the button
-        frameMenu.saveAnimationButton.style.cursor = "pointer" // Enable the button
+        exportButton.disabled = false; // Enable the button
+        frameMenu.saveAnimationButton.disabled = false; // Enable the button
         // We update the lightcurve times due to the planets period
         onTimesUpdate();
 
     } else if (planetMenu.planets.length == 0) {
-        exportButton.disabled = true // Disable the button
-        exportButton.style.cursor = "auto"
-        frameMenu.saveAnimationButton.disabled = true // Disable the button
-        frameMenu.saveAnimationButton.style.cursor = "auto"
+        exportButton.disabled = true; // Disable the button
+        frameMenu.saveAnimationButton.disabled = true; // Disable the button
 
         // If there are no planets, stop simulation and clear the canvas
         clearInterval(id);
@@ -207,23 +211,23 @@ function init() {
 
     if (!lightcurveHandler) {
         const margin = { top: 10, bottom: 40, left: 80, right: 10 } // checked
-        lightcurveHandler = new LightcurveHandler("d3-lightcurve-container", margin)
+        lightcurveHandler = new LightcurveHandler("d3-lightcurve-container", margin);
     }
 
     if (!faceOnCanvasHandler) {
-        faceOnCanvasHandler = new OrbitAnimatorCanvasHandler("faceoncanvas", "faceon")
+        faceOnCanvasHandler = new OrbitAnimatorCanvasHandler("faceoncanvas", "faceon");
     }
 
     if (!edgeOnCanvasHandler) {
-        edgeOnCanvasHandler = new OrbitAnimatorCanvasHandler("edgeoncanvas", "edgeon")
+        edgeOnCanvasHandler = new OrbitAnimatorCanvasHandler("edgeoncanvas", "edgeon");
     }
 
     if (!starMenu) {
-        starMenu = new StarMenu(onStarUpdate, onStarColorChange)
+        starMenu = new StarMenu(onStarUpdate, onStarColorChange);
     }
     // Set the star color gradient in the canvas handlers
-    edgeOnCanvasHandler.defineSunGradient(starMenu.star.color)
-    faceOnCanvasHandler.defineSunGradient(starMenu.star.color)
+    edgeOnCanvasHandler.defineSunGradient(starMenu.star.color);
+    faceOnCanvasHandler.defineSunGradient(starMenu.star.color);
 
     if (!planetMenu) {
         planetMenu = new PlanetMenu(onUpdatePlanets, pauseAnimation, restartAnimation, starMenu.star);
@@ -245,20 +249,20 @@ function init() {
     }
 
     if (!aboutMenu) {
-        aboutMenu = new InfoDisplay("about")
+        aboutMenu = new InfoDisplay("about");
     }
     if (!helpMenu) {
-        helpMenu = new InfoDisplay("manual")
+        helpMenu = new InfoDisplay("manual");
     }
 
     if (!donateMenu) {
-        donateMenu = new DonateMenu("donate")
+        donateMenu = new DonateMenu("donate");
     }
     // this needs to be done for the planet menu form canvas to work!
     starMenu.setTimes(lightcurveMenu.times);
     planetMenu.setTimes(lightcurveMenu.times);
     frameMenu.setDuration((lightcurveMenu.datapoints) * frameMenu.ms);
-    mainCanvas = document.getElementById("main-canvas-container")
+    mainCanvas = document.getElementById("main-canvas-container");
     mainCanvas.addEventListener("click", toggleAnimation);
     
     // Pause animation on space bar pressing
@@ -289,8 +293,6 @@ function init() {
 
 
 function saveAnimation(format = "video/webm") {
-    // Set the pointer to "loading" mode
-    document.body.style.cursor = "wait";
     // Show the recording dialog
     const recordingDialog = document.getElementById("recording-dialog");
     recordingDialog.showModal();
@@ -308,7 +310,7 @@ function showToggleAnimationFeedback(text) {
     const dialog = document.getElementById("toggle-animation-feedback");
     dialog.innerHTML = text;
     dialog.classList.add("visible");
-      // Hide the popup after 2 seconds
+      // Hide the popup after 1 seconds
       setTimeout(() => {
         dialog.classList.remove("visible");
     }, 1000);
@@ -327,7 +329,7 @@ function toggleAnimation() {
 function restartAnimation() {
     console.log("Restarting animation");
     if (!id) {
-        restartSimulation(i)
+        restartSimulation(i);
     }
 }
 
