@@ -3,14 +3,7 @@ dialog#recording-dialog {
     font-size: 24px;
     color: white;
     font-size: 24px;
-    background-color: "red";
     border: none;
-    width: 100%; /* Width of the dialog */
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
     background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
 }
 

@@ -29,6 +29,14 @@
             margin: 0px 0px 2px 0px;
           }
 
+          button:enabled {
+            cursor:pointer
+          }
+
+          button:disabled {
+            cursor:auto;
+          }
+
         .form-controls {
             display: flex;
             justify-content: center;
@@ -240,6 +248,7 @@
         button:enabled {
             cursor: pointer;
         }
+
         /* links */
         a {
             color: #00bfff;

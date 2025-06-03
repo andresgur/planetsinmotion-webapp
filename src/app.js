@@ -80,7 +80,6 @@ const animate = () => {
              // Hide the recording dialog
             const recordingDialog = document.getElementById("recording-dialog");
             recordingDialog.close();
-            document.body.style.cursor = "default";
         },50);
 
             console.log("Recording complete.");
@@ -139,17 +138,26 @@ function recalculateEclipse() {
         lightcurveMenu.mcPointsInput.disabled = true; // Disable MC points input if only two planets
     } else {
         console.log("Showing modal...");
-        const recordingDialog = document.getElementById("recording-dialog");
-        recordingDialog.showModal();
+
+        const mcOverlay = document.getElementById("mc-overlay");
+        const message = document.getElementById("mc-message");
+        message.innerHTML = translations["mc-overlay"];
+
+        mcOverlay.classList.remove("hidden");
         // Monte Carlo calculation for multiple planets
         // Perform the Monte Carlo calculation asynchronously
-        fraction = monteCarloTransitCalculator.getEclipsedFraction(planetMenu.planets);
+        // Use setTimeout to allow the browser to render the dialog before starting the calculation
+        setTimeout(() => {
+            console.log("Starting Monte Carlo calculation...");
+            fraction = monteCarloTransitCalculator.getEclipsedFraction(planetMenu.planets);
+
+            // Close the modal dialog after the calculation is complete
+            mcOverlay.classList.add("hidden");
+            console.log("Monte Carlo calculation complete.");
+        }, 0);
         
         lightcurveMenu.mcPointsInput.disabled = false; // Enable MC points input
 
-        // Close the modal after the calculation is complete
-        console.log("Closing modal...");
-        
     }
 
     //console.timeEnd("getEclipsingAreasMonteCarlo"); // End timing and print result
@@ -286,8 +294,6 @@ function init() {
 
 
 function saveAnimation(format = "video/webm") {
-    // Set the pointer to "loading" mode
-    document.body.style.cursor = "wait";
     // Show the recording dialog
     const recordingDialog = document.getElementById("recording-dialog");
     recordingDialog.showModal();

@@ -5,7 +5,6 @@ import { linspace, } from './utils.js';
 import { ToolTipLabel } from './toolTipLabel.js';
 import { Transit } from './transit.js';
 import { Units } from './units.js';
-import { random } from 'mathjs';
 
 const iconPlanetsize = 15;
 
@@ -356,7 +355,7 @@ export class PlanetMenu {
         this.savePlanetBtn.addEventListener("click", this.savePlanetListener);
 
         this.planetForm.classList.remove("hidden");
-        this.planetForm.focus()
+        this.planetForm.focus();
 
 
         /*Fill in the value if we come from edit button*/
@@ -385,7 +384,7 @@ export class PlanetMenu {
             this.eInput.value = this.defaultPlanet.e;
             this.iInput.value = this.defaultPlanet.i.toFixed(2);
             this.Omega0Input.value = this.defaultPlanet.Omega0.toFixed(2);
-            this.massInput.value = this.defaultPlanet.M;
+            this.massInput.value = this.defaultPlanet.M.toFixed(2);
             this.radiusInput.value = this.defaultPlanet.R;
             this.phaseInput.value = this.defaultPlanet.phase0;
 
@@ -442,6 +441,7 @@ export class PlanetMenu {
         this.closeOnOutsideClickListener = (event) => {
             // Close the about section if the click is outside its content
             if (this.planetForm && !this.planetForm.querySelector(".planet-form-content").contains(event.target)) {
+                console.log("Cancel");
                 this.cancelPlanetBtn.click();
             }
         };
@@ -506,10 +506,6 @@ export class PlanetMenu {
         this.phaseInput.value = parseFloat(phase).toFixed(2);
 
         this.Omega0Input.value = simulatedOmega.toFixed(2);
-        const sum = phase + simulatedOmega;
-        if (sum < 0.2 || (sum > 0.8 && sum < 1.2)) {
-            throw new Error("Break");
-        }
     }
 
     randomizeInputs() {
@@ -543,7 +539,9 @@ export class PlanetMenu {
 
     closePlanetForm() {
         console.log("Closing Menu")
+
         // Blur the active element (e.g., color picker input)
+        // this is needed otherwise the menu might not close properly
         if (document.activeElement) {
             document.activeElement.blur();
         }
