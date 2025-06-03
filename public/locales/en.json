@@ -15,5 +15,5 @@
     "donate-text": "Exoplanet Transient Animator is provided totally free. If you enjoyed our project, consider supporting us with a donation!",
     "pause-animation": "<p>Pausing animation.</p><p> Press the space bar or click on the canvases to resume it.</p>",
     "resume-animation": "<p>Resuming animation.</p><p>Press the space bar or click on the canvases to pause it.</p>",
-    "mc-overlay": "<p>Performing Monte Carlo calculation, please wait...</p><p> <i>planetsinmotion</i> switches to a Monte Carlo approach to calculate the eclipsed fraction when more than 2 planets are added. This is a more computationally expensive approach and may take a few seconds.</p><p> You can lower the number of Monte Carlo or lightcurve points used in the calculation in the Lightcurve menu if the calculation is too slow.</p>"
+    "mc-overlay": "<p>Performing Monte Carlo calculation...</p><p> <i>planetsinmotion</i> switches to a Monte Carlo approach to calculate the eclipsed fraction when more than 2 planets are added. This is more computationally expensive and may take a few seconds.</p><p> You can lower the number of Monte Carlo or lightcurve points used in the calculation in the Lightcurve menu if the calculation is too slow.</p>"
 }
