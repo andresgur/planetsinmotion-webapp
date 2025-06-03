@@ -144,6 +144,9 @@
         input[type="color"]:hover {
             transform: scale(1.1);
         }
+        input[type="color"] {
+            cursor: pointer;
+        }
 
         .menu input,
         .menu select {
@@ -243,6 +246,14 @@
             justify-content: center;
             font-family: "DejaVu Sans";
         }
+        button:disabled {
+            cursor: auto;
+        }
+
+        button:enabled {
+            cursor: pointer;
+        }
+
         /* links */
         a {
             color: #00bfff;

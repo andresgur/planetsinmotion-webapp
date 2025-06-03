@@ -138,6 +138,7 @@ function recalculateEclipse() {
         lightcurveMenu.mcPointsInput.disabled = true; // Disable MC points input if only two planets
     } else {
         console.log("Showing modal...");
+
         const mcOverlay = document.getElementById("mc-overlay");
         const message = document.getElementById("mc-message");
         message.innerHTML = translations["mc-overlay"];
