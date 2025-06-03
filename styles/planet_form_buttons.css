@@ -1,6 +1,6 @@
 
 
-        /* Buttons */
+        /* Buttons from the planet list*/
         .planet-form-btn {
            
             background-color: #444;
@@ -8,7 +8,6 @@
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
-            cursor: pointer;
             
         }
 
