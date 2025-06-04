@@ -19,7 +19,7 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
         .attr("id", "sun-glow-gradient")
         .attr("cx", "50%")
         .attr("cy", "50%")
-        .attr("r", "58%")
+        .attr("r", "68%") /* use this to control the gradient size */
         .selectAll("stop")
         .data([
             { offset: "0%", color: starColor},  // Center: original color
@@ -100,7 +100,7 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
                 .attr("stop-color", body.color); // Bright color body.color
                 linearGradient.append("stop")
                     .attr("offset", `${(1 - sinPhi) / 2  * 100}%`) // Shadow position based on cosPhi
-                    .attr("stop-color", darkenColor(body.color, 85)); // Darkened color
+                    .attr("stop-color", darkenColor(body.color, 65)); // Darkened color
                                      
                 color = `url(#${gradientId})`
 
