@@ -11,6 +11,13 @@ export class DonateMenu extends InfoDisplay {
         this.donateETHButton = new CopyWalletButton("ETH",ETHaddress);
     }
 
+    setLanguage(language) {
+        super.setLanguage(language);
+        const contriuteText = document.getElementById("contribute-text");
+        contriuteText.innerHTML = language["contribute-text"];
+    }
+
+
 }
 
 class CopyWalletButton {
