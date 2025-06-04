@@ -19,6 +19,7 @@
             overflow-y: auto;
             height: auto    ;
             max-height: 700px;
+            align-items: center;
         }
 
         .information-title {
@@ -29,11 +30,11 @@
         .information-content{ 
             justify-content: left;
             font-size: 20px;
+            text-align: center;
         }
 
         .donate-content {
             gap: 10px;
-            justify-content: center;
             align-items: center;
             flex-direction:row ;
             display: flex;
