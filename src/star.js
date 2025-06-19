@@ -9,7 +9,7 @@ export class Star extends Body {
      * @param {number} R - Radius of the star in solar units
      * @param {string} color - Color of the star
      */
-    constructor(M, R, color='yellow') {
+    constructor(M=1, R=1, color='yellow') {
         super(M * M_sun, R * R_sun, color);
     }
 

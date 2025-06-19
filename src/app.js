@@ -95,6 +95,9 @@ const animate = () => {
 function onStarUpdate() {
     planetMenu.setStar(starMenu.star)
     monteCarloTransitCalculator.star = starMenu.star;
+    if (planetMenu.planets.length == 0) {
+        return;
+    }
     updateSimulation();
 }
 

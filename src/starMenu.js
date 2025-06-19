@@ -21,12 +21,34 @@ export class StarMenu {
         
         // Add listeners for star inputs
         starMassInput.addEventListener("input", (event) => {
+            const min = parseFloat(event.target.min);
+            const max = parseFloat(event.target.max);
+            var value = parseFloat(event.target.value);
+
+            if (value < min) {
+                value = min; // Reset to minimum
+                event.target.value = value
+            } else if (value > max) {
+                value = max; // Reset to maximum
+                event.target.value = value
+            }
             const newMass = parseFloat(event.target.value);
                 this.star.M = newMass;
                 this.onStarUpdate(); // Trigger simulation update
         });
 
         starRadiusInput.addEventListener("input", (event) => {
+            const min = parseFloat(event.target.min);
+            const max = parseFloat(event.target.max);
+            var value = parseFloat(event.target.value);
+
+            if (value < min) {
+                value = min; // Reset to minimum
+                event.target.value = value
+            } else if (value > max) {
+                value = max; // Reset to maximum
+                event.target.value = value
+            }
             const newRadius = parseFloat(event.target.value);
                 this.star.R = newRadius;
                 this.onStarUpdate(); // Trigger simulation update

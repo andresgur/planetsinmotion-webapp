@@ -5,6 +5,7 @@ import { linspace, } from './utils.js';
 import { ToolTipLabel } from './toolTipLabel.js';
 import { Transit } from './transit.js';
 import { Units } from './units.js';
+import {planetPresets} from './planets/planets.js';
 
 const iconPlanetsize = 15;
 
@@ -29,7 +30,6 @@ export class PlanetMenu {
         this.defaultPlanet = this.planet;
         this.supressedListener = false;
         //this.initCanvas()
-
 
     }
 
@@ -119,6 +119,10 @@ export class PlanetMenu {
         this.radiusInput = document.getElementById("planet-radius-input");
         this.colorInput = document.getElementById("planet-color");
 
+        //preset
+        this.presetSelect = document.getElementById("planet-presets");
+
+
         const inputs = [this.periodInput, this.iInput, this.eInput, this.massInput, this.radiusInput, this.phaseInput, this.Omega0Input]
         /* Add min max functionality */
         inputs.forEach(input => {
@@ -168,7 +172,8 @@ export class PlanetMenu {
             //Randomize inputs
             this.randomizeInputs();
 
-            this.errorLabel.classList.remove("hidden")
+            this.errorLabel.classList.remove("hidden");
+            this.presetSelect.selectedIndex = 0; // Reset the preset select
             this.createPlanet();
             this.updateCanvas();
             // activate the listeners back
@@ -183,7 +188,8 @@ export class PlanetMenu {
             //Randomize inputs
             this.beautifulInputs();
 
-            this.errorLabel.classList.remove("hidden")
+            this.errorLabel.classList.remove("hidden");
+            this.presetSelect.selectedIndex = 0; // Reset the preset select
             this.createPlanet();
             this.updateCanvas();
             // activate the listeners back
@@ -203,6 +209,28 @@ export class PlanetMenu {
 
         // Planet counter
         this.planetCounter = document.getElementById("planet-title-number");
+
+        this.presetSelect.addEventListener("change", (event) => {
+            const selected = this.presetSelect.value;
+            const planet = planetPresets[selected];
+            console.log("Selected planet preset: " + selected);
+            if (planet) {
+                this.planetNameInput.value = planet.planetName;
+                this.massInput.value = (planet.M).toFixed(7);
+                this.radiusInput.value = (planet.R).toFixed(3);
+                this.periodInput.value = (planet.P).toFixed(2);
+                this.iInput.value = planet.i.toFixed(3);
+                this.eInput.value = planet.e.toFixed(3);
+                this.phaseInput.value = planet.phase0.toFixed(2);
+                this.Omega0Input.value = planet.Omega0.toFixed(2);
+                this.colorInput.value = planet.color;
+                this.planetNameInput.value = planet.planetName;
+                this.createPlanet();
+                this.updateCanvas();
+            }
+
+
+        });
 
     }
     /**
@@ -252,8 +280,8 @@ export class PlanetMenu {
 
     updateCanvas(nOrbitTimes = 5000) {
         if (this.planet != null) {
-            const datapoints = Math.floor(this.planet.e + 0.01 * (this.planet.P * nOrbitTimes));
-            console.log("Updating canvas for " + this.planet.planetName + "with " + datapoints + " datapoints");
+            const datapoints = Math.min(Math.floor(this.planet.e + 0.01 * (this.planet.P * nOrbitTimes)), 500000);
+            console.log("Updating canvas for " + this.planet.planetName + " with " + datapoints + " datapoints");
             const times = linspace(0, this.planet._P, datapoints);
             this.planet.setOrbitingTimes(times);
             this.star.setOrbitingTimes(times);
@@ -266,7 +294,7 @@ export class PlanetMenu {
             // Update labels
             document.getElementById("perihelion").innerText = (this.planet.rmin / AU).toFixed(3) + " AU";
             document.getElementById("aphelion").innerText = (this.planet.rmax / AU).toFixed(3) + " AU";
-            document.getElementById("transit-depth").innerText = transit.transitDepth.toFixed(3);
+            document.getElementById("transit-depth").innerText = transit.transitDepth.toFixed(4);
             console.log("Transit duration", transit.transitDuration);
             const dt = (timesDays[1] - timesDays[0]);
             if (transit.transitDuration == 0) {
@@ -379,6 +407,7 @@ export class PlanetMenu {
 
         } else {
             this.savePlanetBtn.textContent = "Add";
+            this.presetSelect.selectedIndex = 0; // Reset the preset select
 
             this.periodInput.value = this.defaultPlanet.P;
             this.eInput.value = this.defaultPlanet.e;
