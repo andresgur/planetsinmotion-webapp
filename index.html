@@ -10,7 +10,7 @@
     <style>
 
     </style>
-  <script type="module" crossorigin src="./assets/index-DpcXG_2c.js"></script>
+  <script type="module" crossorigin src="./assets/index-BscBYnsi.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-Bwle4LX1.css">
 </head>
 
@@ -116,11 +116,11 @@
                     </div>
                     <div class="menu-row">
                         <label for="star-mass">Mass (M<sub>☉</sub>):</label>
-                        <input type="number" min="0.001" step="0.1" id="star-mass" value="1">
+                        <input type="number" min="0.001" step="0.1" id="star-mass" value="1" max="400">
                     </div>
                     <div class="menu-row">
                         <label for="star-radius">Radius (R<sub>☉</sub>):</label>
-                        <input type="number" min="0.0" step="0.5" id="star-radius" value="10">
+                        <input type="number" min="0.0" step="0.5" id="star-radius" value="10" max="2000">
                     </div>
                     <div class="menu-row">
                         <label for="star-color">Color:</label>
@@ -155,21 +155,27 @@
                     <div class="menu">
                         <!-- Planet Section -->
                         <div class="menu-section">
-
+                            <div class="menu-row">
+                                <label for="planet-presets">Preset:</label>
+                                <select id="planet-presets">
+                                    <option disabled selected value></option>
+                                    <option value="Mercury">Mercury</option>
+                                    <option value="Venus">Venus</option>
+                                    <option value="Earth">Earth</option>
+                                    <option value="Mars">Mars</option>
+                                    <option value="Jupiter">Jupiter</option>
+                                    <option value="Saturn">Saturn</option>
+                                    <option value="Uranus">Uranus</option>
+                                    <option value="Neptune">Neptune</option>
+                                    <option value="Pluto">Pluto</option>
+                                </select>
+                                </div>  
                             <label class="menu-label">Planet</label>
                             <div class="menu-row">
                                 <label for="planet-name">Name:</label>
                                 <input type="text" id="planet-name" />
                                 <!--<input id="planet-name" list="planet-options" placeholder="Enter planet name" />
                                 <datalist id="planet-options">
-                                    <option value="Mercury"></option>
-                                    <option value="Venus"></option>
-                                    <option value="Earth"></option>
-                                    <option value="Mars"></option>
-                                    <option value="Jupiter"></option>
-                                    <option value="Saturn"></option>
-                                    <option value="Uranus"></option>
-                                    <option value="Neptune"></option>
                                 </datalist>-->
                             </div>
                             <div class="menu-row">
