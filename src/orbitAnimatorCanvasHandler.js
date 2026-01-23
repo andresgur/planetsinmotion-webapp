@@ -1,8 +1,8 @@
+import { CanvasHandler } from "./canvasHandler";
+import { AU } from "./constants";
+import { Star } from "./star";
+import { darkenColor } from './utils.js';
 
-import { CanvasHandler } from "./canvasHandler.js";
-import { AU } from "./constants.js";
-import { Star } from "./star.js";
-import {darkenColor} from './utils.js';
 
 export class OrbitAnimatorCanvasHandler extends CanvasHandler {
 
@@ -15,20 +15,48 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
     defineSunGradient(starColor) {
         this.starColor = starColor;
         this.svg.selectAll(".star-gradient").remove();
-        this.svg.append("defs").attr("class", "star-gradient").append("radialGradient")
-        .attr("id", "sun-glow-gradient")
-        .attr("cx", "50%")
-        .attr("cy", "50%")
-        .attr("r", "68%") /* use this to control the gradient size */
-        .selectAll("stop")
-        .data([
-            { offset: "0%", color: starColor},  // Center: original color
-            { offset: "100%", color: "black" }  // Edge: darker shadow
-        ])
-        .enter()
-        .append("stop")
-        .attr("offset", d => d.offset)
-        .attr("stop-color", d => d.color);
+        const defs = this.svg.append("defs").attr("class", "star-gradient");
+
+        defs.append("radialGradient")
+            .attr("id", "sun-glow-gradient")
+            .attr("cx", "50%")
+            .attr("cy", "50%")
+            .attr("r", "68%") /* use this to control the gradient size */
+            .selectAll("stop")
+            .data([
+                { offset: "0%", color: starColor },  // Center: original color
+                { offset: "100%", color: "black" }  // Edge: darker shadow
+            ])
+            .enter()
+            .append("stop")
+            .attr("offset", d => d.offset)
+            .attr("stop-color", d => d.color);
+
+        // Add glow filter
+        // Center of object box is implicitly at 0.5 / 0.5
+        //To grow equally, you shift left/up by half of the expansion and enlarge width/height accordingly.
+        const filter = defs.append("filter")
+            .attr("id", "star-glow-filter")
+            .attr("x", "-100%")
+            .attr("y", "-100%")
+            .attr("width", "300%")
+            .attr("height", "300%")
+
+        filter.append("feGaussianBlur")
+            .attr("stdDeviation", "25")
+            .attr("result", "coloredBlur");
+
+        filter.append("feFlood")
+            .attr("flood-color", starColor)
+            .attr("flood-opacity", "1")
+            .attr("result", "flood");
+
+        filter.append("feMerge")
+            .selectAll("feMergeNode")
+            .data([{ result: "coloredBlur" }, { result: "SourceGraphic" }])
+            .enter()
+            .append("feMergeNode")
+            .attr("in", d => d.result);
     }
 
     clear() {
@@ -67,13 +95,13 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
                 // Gradient already defined in the constructor    
                 color = "url(#sun-glow-gradient)"
             } else {
-                
-                const theta = Math.atan2(faceon ? -y: y, x) // account for the flip signed in x
+
+                const theta = Math.atan2(faceon ? -y : y, x) // account for the flip signed in x
                 const cosTheta = Math.cos(theta);
                 const sinTheta = Math.sin(theta);
                 const r = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
                 const sinPhi = z / r;
-                
+
                 //const phi = Math.acos(Math.sqrt(x ** 2 + y ** 2) / r);
                 //const cosPhi = Math.cos(phi); // cosPhi determines the position of the shadow
 
@@ -82,26 +110,26 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
                 const gradientStartY = 50 * (1 + sinTheta); // At theta = 90 degrees, this will be 100% (bottom)
                 const gradientEndX = 50 * (1 + cosTheta);
                 const gradientEndY = 50 * (1 - sinTheta);
-                
+
                 // Define the gradient
                 // Gradient ID is unique for each planet and view (face-on or edge-on) otherwise there are conflicts
                 const gradientId = `planet-gradient-${body.planetName.replace(/\s+/g, '')}-${faceon ? "faceon" : "edegeon"}`;
                 // y = 100% is the bottom of the planet
                 // x1 = x2 means no gradient in the horizontal direction
-                
+
                 const linearGradient = this.svg.append("defs").attr("class", "planet-defs").append("linearGradient").attr("id", gradientId)
-                .attr("x1",`${gradientStartX}%`)
-                .attr("y1",`${gradientStartY}%`)
-                .attr("x2",`${gradientEndX}%`)
-                .attr("y2", `${gradientEndY}%`) 
+                    .attr("x1", `${gradientStartX}%`)
+                    .attr("y1", `${gradientStartY}%`)
+                    .attr("x2", `${gradientEndX}%`)
+                    .attr("y2", `${gradientEndY}%`)
 
                 linearGradient.append("stop")
-                .attr("offset", "0%")
-                .attr("stop-color", body.color); // Bright color body.color
+                    .attr("offset", "0%")
+                    .attr("stop-color", body.color); // Bright color body.color
                 linearGradient.append("stop")
-                    .attr("offset", `${(1 - sinPhi) / 2  * 100}%`) // Shadow position based on cosPhi
+                    .attr("offset", `${(1 - sinPhi) / 2 * 100}%`) // Shadow position based on cosPhi
                     .attr("stop-color", darkenColor(body.color, 65)); // Darkened color
-                                     
+
                 color = `url(#${gradientId})`
 
                 /**
@@ -167,11 +195,12 @@ export class OrbitAnimatorCanvasHandler extends CanvasHandler {
             const bodyY = this.yScale(y)
             // Add the circle
             this.svg.append("circle")
-            .attr("pointer-events","none")
-            .attr("cx", bodyX)
-            .attr("cy", bodyY)
-            .attr("r", radius)
-            .style("fill", color);
+                .attr("pointer-events", "none")
+                .attr("cx", bodyX)
+                .attr("cy", bodyY)
+                .attr("r", radius)
+                .style("fill", color)
+                .style("filter", body instanceof Star ? "url(#star-glow-filter)" : "none");;
             /** TODO implement atmosphere
             if (!(body instanceof Star)) {
 
