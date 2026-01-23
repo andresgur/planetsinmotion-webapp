@@ -6,7 +6,6 @@ import { ToolTipLabel } from './toolTipLabel.js';
 import { Transit } from './transit.js';
 import { Units } from './units.js';
 import { planetPresets } from './planets/planets.js';
-import { log } from 'mathjs';
 
 const iconPlanetsize = 15;
 
@@ -15,13 +14,15 @@ export class PlanetMenu {
         this.onUpdate = onUpdate; // Callback to restart the simulation
         this.onMenuOpened = onMenuOpened;
         this.onMenuClosed = onMenuClosed;
-        this.planets = [];
         this.star = star.copy();
 
         // default values
         this.units = new Units("jupyter"); // Default unit for the planets
         this.setLabelUnits();
+
+        //track planets
         this.planetNameCounter = 0;
+        this.planets = [];
 
         // Initialize menu elements
         this.defaultColor = document.getElementById("planet-period").style.color;
@@ -97,6 +98,9 @@ export class PlanetMenu {
         this.closePlanetBtn = document.getElementById("close-planet-btn");
         this.closePlanetBtn.addEventListener("click", () => this.cancelPlanetBtn.click());
 
+        this.savePlanetBtn = document.getElementById("save-planet-btn");
+
+
         this.planetList = document.getElementById("planet-list");
 
         /* Error messages*/
@@ -163,6 +167,9 @@ export class PlanetMenu {
             console.log("Planet name changed to " + this.planet.planetName);
             this.errorLabel.classList.add("hidden");
         });
+        // fill in with default values
+        this.colorInput.value = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+        this.planetNameInput.value = "Planet " + (this.planetNameCounter + 1);
 
         this.randomizeBtn = document.getElementById("randomize-planet-btn");
 
@@ -377,7 +384,6 @@ export class PlanetMenu {
         /* Button to add planet*/
 
         // This listener is dynamic because of the index so needs to be done in each call to the menu
-        this.savePlanetBtn = document.getElementById("save-planet-btn");
         this.savePlanetListener = () => this.addPlanet(index);
         this.savePlanetBtn.addEventListener("click", this.savePlanetListener);
 
@@ -566,7 +572,6 @@ export class PlanetMenu {
     }
 
     closePlanetForm() {
-        console.log("Closing Menu")
 
         // Blur the active element (e.g., color picker input)
         // this is needed otherwise the menu might not close properly
@@ -619,8 +624,6 @@ export class PlanetMenu {
         if (this.planet != null) {
             /* If planet did not exist */
             if (index == null) {
-                console.log("Adding planet " + this.planet.planetName);
-                console.log("Adding planet with period " + this.planet.P + " days");
                 this.planets.push(this.planet);
                 this.planetNameCounter++;
 
