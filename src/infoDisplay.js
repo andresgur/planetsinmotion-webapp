@@ -22,7 +22,6 @@ export class InfoDisplay {
 
     setLanguage(language) {
         const body = document.getElementById(this.contentName + "-text");
-        console.log("Setting language for " + this.contentName);
         body.innerHTML = language[this.contentName + "-text"];
     }
 

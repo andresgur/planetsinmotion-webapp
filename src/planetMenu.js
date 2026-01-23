@@ -5,7 +5,8 @@ import { linspace, } from './utils.js';
 import { ToolTipLabel } from './toolTipLabel.js';
 import { Transit } from './transit.js';
 import { Units } from './units.js';
-import {planetPresets} from './planets/planets.js';
+import { planetPresets } from './planets/planets.js';
+import { log } from 'mathjs';
 
 const iconPlanetsize = 15;
 
@@ -122,7 +123,6 @@ export class PlanetMenu {
         //preset
         this.presetSelect = document.getElementById("planet-presets");
 
-
         const inputs = [this.periodInput, this.iInput, this.eInput, this.massInput, this.radiusInput, this.phaseInput, this.Omega0Input]
         /* Add min max functionality */
         inputs.forEach(input => {
@@ -148,7 +148,6 @@ export class PlanetMenu {
                 this.updateCanvas();
             });
         });
-
         this.colorInput.addEventListener("input", () => {
             // This prevents randomize from triggering the event
             if (this.supressedListener) return;
@@ -157,10 +156,11 @@ export class PlanetMenu {
             this.createPlanet();
             this.updateCanvas();
         });
-
         this.planetNameInput.addEventListener("input", (event) => {
-
             event.target.style.color = this.defaultColor;
+            // no need to update the canvas just because the name changed
+            this.planet.planetName = event.target.value;
+            console.log("Planet name changed to " + this.planet.planetName);
             this.errorLabel.classList.add("hidden");
         });
 
@@ -215,7 +215,6 @@ export class PlanetMenu {
             const planet = planetPresets[selected];
             console.log("Selected planet preset: " + selected);
             if (planet) {
-                this.planetNameInput.value = planet.planetName;
                 this.massInput.value = (planet.M).toFixed(7);
                 this.radiusInput.value = (planet.R).toFixed(3);
                 this.periodInput.value = (planet.P).toFixed(2);
@@ -254,8 +253,8 @@ export class PlanetMenu {
         const e = parseFloat(this.eInput.value);
         const phase = parseFloat(this.phaseInput.value);
         const Omega0 = parseFloat(this.Omega0Input.value);
-        const color = this.colorInput.value
-        const name = this.planetNameInput.value
+        const color = this.colorInput.value;
+        const name = this.planetNameInput.value;
 
         try {
             this.planet = new Planet(M, R, P, this.star, i, e, 0, Omega0, phase, color, name, this.units);
@@ -489,7 +488,7 @@ export class PlanetMenu {
         // max mass is around 10, so 20 more than enough
         const randomNumber = Math.random();
         const mass = (randomNumber + 1) * 20 * M_J;
-        this.massInput.value = parseFloat( (mass / this.units.M).toFixed(1));
+        this.massInput.value = parseFloat((mass / this.units.M).toFixed(1));
         // radius go up to about 25 RE but we want to make it look nicer
         // make it between 0.25 and 0.5 the star radius
         const radius = 0.2 * (randomNumber + 1) * this.star._R
@@ -602,7 +601,7 @@ export class PlanetMenu {
      */
     addPlanet(index = null) {
 
-        const name = this.planetNameInput.value
+        const name = this.planetNameInput.value;
         const planetNames = this.planets.map(planet => planet.planetName);
         const existingIndex = planetNames.indexOf(name);
         // Check if the planet name already exists in the list
@@ -620,6 +619,8 @@ export class PlanetMenu {
         if (this.planet != null) {
             /* If planet did not exist */
             if (index == null) {
+                console.log("Adding planet " + this.planet.planetName);
+                console.log("Adding planet with period " + this.planet.P + " days");
                 this.planets.push(this.planet);
                 this.planetNameCounter++;
 
@@ -691,7 +692,6 @@ export class PlanetMenu {
         const planetItem = document.createElement("div");
         planetItem.className = "planet-item";
         planetItem.dataset.name = planet.planetName; // Use dataset to track the planet name
-
         // Create dot
         // dot container so everything is aligned
         const dotContainer = document.createElement("div");

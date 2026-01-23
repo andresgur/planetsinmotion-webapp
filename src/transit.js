@@ -1,6 +1,6 @@
-import { getTransitArea, getBeta} from './trigonometry.js'
+import { getTransitArea, getBeta } from './trigonometry.js'
 import { Body } from './body.js';
-import {atan2, sin, cos} from 'mathjs';
+import { atan2, sin, cos } from 'mathjs';
 
 export class Transit {
     /**
@@ -10,27 +10,27 @@ export class Transit {
      * @param {Body} eclipsingBody - The eclipsing body
      * @param {boolean} checkFront - Whether to also check for the eclipsing body being in front of the eclipsed body
      */
-    constructor(eclipsedBody, eclipsingBody, checkFront=true) {
+    constructor(eclipsedBody, eclipsingBody, checkFront = true) {
 
         this.eclipsedBody = eclipsedBody;
         this.eclipsingBody = eclipsingBody;
         this.checkFront = checkFront;
         this.datapoints = eclipsingBody.rx.length;
-        [this.fullTransitIndexes, this.partialTransitIndexes ] = this.getTransits(this.eclipsingBody, this.eclipsedBody, this.checkFront);
+        [this.fullTransitIndexes, this.partialTransitIndexes] = this.getTransits(this.eclipsingBody, this.eclipsedBody, this.checkFront);
         this.workoutTransits()
-        
+
     }
-    
+
     workoutTransits() {
-        console.log("Number of full transits: ", this.fullTransitIndexes.length);
-        console.log("Number of partial transits: ", this.partialTransitIndexes.length);
+        //console.log("Number of full transits: ", this.fullTransitIndexes.length);
+        //console.log("Number of partial transits: ", this.partialTransitIndexes.length);
         this.eclipsedArea = this.getEclipsedArea(this.fullTransitIndexes, this.partialTransitIndexes)
         this.visibleFraction = this.eclipsedArea.map(area => 1 - area / this.eclipsedBody.Area)
 
         this.transitDuration = this.partialTransitIndexes.length + this.fullTransitIndexes.length;
 
         this.transitDepth = Math.max(...this.eclipsedArea) / this.eclipsedBody.Area;
-        
+
     }
 
     /**
@@ -44,17 +44,17 @@ export class Transit {
      * - The calculation uses the angles `alpha` (angle between the centers of the two bodies) and `beta` (angle between the center of the planet and the edge of the star).
      */
     getEclipsedArea(fullTransitIndexes, partialTransitIndexes) {
-        
+
         var eclipsedArea = new Array(this.datapoints).fill(1);
         partialTransitIndexes.forEach(index => {
 
-                eclipsedArea[index] = getTransitArea(this.eclipsedBody, this.eclipsingBody, index);
+            eclipsedArea[index] = getTransitArea(this.eclipsedBody, this.eclipsingBody, index);
         });
 
         fullTransitIndexes.forEach(index => {
             // Set transit area for full transits
             eclipsedArea[index] = this.eclipsingBody.Area; // Full transit area is the area of the planet
-            
+
         });
         return eclipsedArea
     }
@@ -70,7 +70,7 @@ export class Transit {
     */
     getTransits(body, star, checkInFront = true) {
 
-         // Array of all indices
+        // Array of all indices
         const indices = Array.from({ length: this.datapoints }, (_, i) => i);
 
         const inFrontIndices = indices.filter(i => body.rx[i] > star.rx[i] || !checkInFront);
@@ -90,7 +90,7 @@ export class Transit {
      * @returns 
      */
     getContactPoints(index) {
-        const beta = getBeta(this.eclipsedBody._R, this.eclipsingBody._R, this.eclipsingBody.ry[index], 
+        const beta = getBeta(this.eclipsedBody._R, this.eclipsingBody._R, this.eclipsingBody.ry[index],
             this.eclipsingBody.rz[index], this.eclipsedBody.ry[index], this.eclipsedBody.rz[index]);
         const ry = this.eclipsingBody.ry[index];
         const rz = this.eclipsingBody.rz[index];
