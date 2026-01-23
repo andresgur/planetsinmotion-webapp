@@ -55,7 +55,7 @@ const animate = () => {
     // Sort bodies for face-on view (z-direction)
     const sortedBodiesFaceOn = bodies.slice().sort((a, b) => a.rz[i] - b.rz[i]);
     faceOnCanvasHandler.drawBodies(sortedBodiesFaceOn, i, true);
-    
+
     // Sort bodies for edge-on view (x-direction)
     const sortedBodiesEdgeOn = bodies.slice().sort((a, b) => a.rx[i] - b.rx[i]);
     edgeOnCanvasHandler.drawBodies(sortedBodiesEdgeOn, i);
@@ -72,15 +72,15 @@ const animate = () => {
 
             record = false;
             setTimeout(() => {
-            [edgeOnCanvasHandler, faceOnCanvasHandler, lightcurveHandler].forEach(handler => {
-                console.log("Stopping recording");
-                handler.stopRecording();
-            });
+                [edgeOnCanvasHandler, faceOnCanvasHandler, lightcurveHandler].forEach(handler => {
+                    console.log("Stopping recording");
+                    handler.stopRecording();
+                });
 
-             // Hide the recording dialog
-            const recordingDialog = document.getElementById("recording-dialog");
-            recordingDialog.close();
-        },50);
+                // Hide the recording dialog
+                const recordingDialog = document.getElementById("recording-dialog");
+                recordingDialog.close();
+            }, 50);
 
             console.log("Recording complete.");
             console.log("All simulations saved.");
@@ -130,7 +130,7 @@ function onTimesUpdate() {
 
 function recalculateEclipse() {
     //console.time("getEclipsingAreasMonteCarlo"); // Start timing
-    if (planetMenu.planets.length ==1) {
+    if (planetMenu.planets.length == 1) {
         // Use analytical calculation if only one planet
         const transit = new Transit(starMenu.star, planetMenu.planets[0]);
         fraction = transit.visibleFraction;
@@ -158,13 +158,13 @@ function recalculateEclipse() {
             mcOverlay.classList.add("hidden");
             console.log("Monte Carlo calculation complete.");
         }, 0);
-        
+
         lightcurveMenu.mcPointsInput.disabled = false; // Enable MC points input
 
     }
 
     //console.timeEnd("getEclipsingAreasMonteCarlo"); // End timing and print result
-    
+
     const argmin = fraction.indexOf(Math.min(...fraction));
     const timeMin = lightcurveMenu.timesDays[argmin];
     console.log("Transit depth: ", (Math.min(...fraction)).toFixed(3) + " at " + timeMin.toFixed(2) + " days");
@@ -182,7 +182,7 @@ function updateSimulation() {
     starMenu.setTimes(lightcurveMenu.times);
     planetMenu.setTimes(lightcurveMenu.times);
     recalculateEclipse();
-    const limits = Math.abs(planetMenu.maxDistance *1.02);
+    const limits = Math.abs(planetMenu.maxDistance * 1.02);
     faceOnCanvasHandler.setDomains(-limits, limits, -limits, limits, true);
     edgeOnCanvasHandler.setDomains(-limits, limits, -limits, limits, false);
     restartSimulation(0);
@@ -268,13 +268,13 @@ function init() {
     frameMenu.setDuration((lightcurveMenu.datapoints) * frameMenu.ms);
     mainCanvas = document.getElementById("main-canvas-container");
     mainCanvas.addEventListener("click", toggleAnimation);
-    
+
     // Pause animation on space bar pressing
     document.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
             event.preventDefault(); // Prevent the default behavior of the space bar (e.g., scrolling)
             toggleAnimation(); // Toggle the animation state
-        // Show planet form on pressing the "+" button (and not pressing Ctrl)
+            // Show planet form on pressing the "+" button (and not pressing Ctrl)
         } else if ((event.code == "NumpadAdd") && (!event.ctrlKey)) {
             console.log("Show planet form");
             planetMenu.showPlanetForm();
@@ -285,7 +285,7 @@ function init() {
     });
 
     exportButton.disabled = true;
-    
+
     frameMenu.saveAnimationButton.addEventListener("click", () => {
         saveAnimation();
     });
@@ -293,6 +293,10 @@ function init() {
     loadLanguage();
 
     monteCarloTransitCalculator = new MonteCarloTransitCalculator(starMenu.star, lightcurveMenu.mcPoints);
+    if (planetMenu.planets.length == 0) {
+        // add initial default planet
+        planetMenu.addPlanet();
+    }
 }
 
 
@@ -314,8 +318,8 @@ function showToggleAnimationFeedback(text) {
     const dialog = document.getElementById("toggle-animation-feedback");
     dialog.innerHTML = text;
     dialog.classList.add("visible");
-      // Hide the popup after 1 seconds
-      setTimeout(() => {
+    // Hide the popup after 1 seconds
+    setTimeout(() => {
         dialog.classList.remove("visible");
     }, 1000);
 }
@@ -351,7 +355,7 @@ function restartSimulation(start = 0) {
     console.log("Restarting simu")
 
     //Clear simulation//
-    if (id) { 
+    if (id) {
         clearInterval(id);
         id = null; // Reset the interval ID
     }
