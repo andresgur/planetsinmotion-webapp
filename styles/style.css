@@ -1,272 +1,280 @@
+body {
+    /* Top margin with the browser menu */
+    min-height: 100vh;
+    height: 100vh;
+    background-color: black;
+}
+
+.main-container {
+    display: flex;
+
+    flex-direction: row;
+    /* stick content to the top */
+    align-items: flex-start;
+    height: 100%;
+    justify-content: space-between;
+    /* spread items across the width with the menus on the sides*/
+    /* Left menu + Main content + menu */
+    gap: 5px;
+}
+
+#buttonWrapper {
+    position: absolute;
+    width: 30px;
+    top: 5px;
+    right: 5px;
+}
+
+input[type="button"] {
+    padding: 5px;
+    width: 30px;
+    margin: 0px 0px 2px 0px;
+}
+
+button:enabled {
+    cursor: pointer
+}
+
+button:disabled {
+    cursor: auto;
+}
+
+/* Close Button */
+.close-btn {
+    top: 0px;
+    left: 0px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 30px;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    color: #f00;
+}
+
+.hidden {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.menu {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    /* spacing between elements and "walls" of menu */
+    border: 2px solid white;
+    border-radius: 5px;
+    background-color: #222;
+    /* Full width of the column */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width, makes both menus appear equally "wide" */
+}
+
+@media (width < 600px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu {
+        padding: 10px;
+    }
+
+    .close-btn {
+        font-size: 35px;
+    }
+
+
+}
 
 
 
-        body {
-            /* Top margin with the browser menu */
-            min-height: 100vh;
-            height: 100vh;
-            background-color: black;
-        }
+.menu-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 20px;
+    /* Vertical space between menus */
+}
 
-        .main-container {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start; /* stick content to the top */
-            height: 100%;
-            justify-content: space-between; /* spread items across the width with the menus on the sides*/
-            /* Left menu + Main content + menu */
-            gap: 5px;
-        }
-        #buttonWrapper {
-            position: absolute;
-            width: 30px;
-            top: 5px;
-            right: 5px;
-          }
-          input[type="button"] {
-            padding: 5px;
-            width: 30px;
-            margin: 0px 0px 2px 0px;
-          }
+.menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Space between inputs */
+    width: 100%;
+    /* needed*/
+}
 
-          button:enabled {
-            cursor:pointer
-          }
+.label-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    /* Space between inputs */
+    width: 100%;
+    white-space: nowrap;
+    /* Prevent label text from wrapping */
+}
 
-          button:disabled {
-            cursor:auto;
-          }
+.menu-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    /* Horizontal spacing between label and input */
+    align-items: center;
+    margin-bottom: 2px;
+}
 
-        .form-controls {
-            display: flex;
-            justify-content: center;
-            flex-direction: row;
-            gap: 10px;
-            /* Space between buttons */
-            margin-top: 20px;
-        }
+.menu label {
+    font-size: 16px;
+    /* Size of all the labels inside the menu */
+    font-style: bold;
+    width: 30%;
+    white-space: nowrap;
+    /* Prevent label text from wrapping */
+}
 
-        .planet-btns {
-            background: none;
-            border: none;
-            padding: 5px;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            /* Smooth transition for hover effect */
-        }
+input[type="color"]:hover {
+    transform: scale(1.1);
+}
 
-        /* Close Button */
-        .close-btn {
-            top: 0px;
-            left: 0px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 30px;
-            z-index: 10;
-        }
+input[type="color"] {
+    cursor: pointer;
+}
 
-        .close-btn:hover {
-            color: #f00;
-        }
+.menu input,
+.menu select {
+    font-size: 16px;
+    /* Size of the input font */
+    /*padding: 5px;*/
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+    width: 35%;
+}
 
-        .hidden {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+.menu input:focus,
+.menu select:focus {
+    outline: none;
+    border-color: #666;
+}
 
+.menu input:disabled {
+    background-color: #555;
+    color: #888;
+}
 
-        .menu {
+.dot-planet-container {
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    display: flex;
+}
 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            /* spacing between elements and "walls" of menu */
-            border: 2px solid white;
-            border-radius: 5px;
-            background-color: #222;
-            /* Full width of the column */
-            box-sizing: border-box;
-            /* Include padding and border in the element's total width, makes both menus appear equally "wide" */
-        }
+.dot-planet {
+    cursor: pointer;
+    display: block;
+    border-radius: 50%;
+    padding: 15px;
+}
 
-        .menu-container {
-            flex:2;
-            display: flex;
-            flex-direction: column;
-            color: white;
-            gap: 20px;
+.dot-planet:hover {
+    transform: scale(1.1);
+    /* Slightly enlarge the dot on hover */
+}
 
-            /* Vertical space between menus */
-        }
+.dot-star {
+    background-color: yellow;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 2px;
+}
 
-        .menu-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            /* Space between inputs */
-            width: 100%; /* needed*/
-        }
+.dot-star:hover {
+    transform: scale(1.1);
+    /* Slightly enlarge the star on hover */
+}
 
-        .label-body {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            /* Space between inputs */
-            width: 100%;
-            white-space: nowrap;
-            /* Prevent label text from wrapping */
-        }
+/* Scrollable Planet List */
+.planet-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
 
-        .menu-row {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 10px;
-            /* Horizontal spacing between label and input */
-            align-items: center;
-            margin-bottom: 2px;
-        }
+/* Planet Item */
+.planet-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+}
 
-        .menu label {
-            font-size: 16px;
-            /* Size of all the labels inside the menu */
-            font-style: bold;
-            width: 30%;
-            white-space: nowrap;
-            /* Prevent label text from wrapping */
-        }
+.planet-name-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        input[type="color"]:hover {
-            transform: scale(1.1);
-        }
-        input[type="color"] {
-            cursor: pointer;
-        }
+.menu-label {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    margin-top: 20px;
+}
 
-        .menu input,
-        .menu select {
-            font-size: 16px;
-            /* Size of the input font */
-            /*padding: 5px;*/
-            border: 1px solid #444;
-            border-radius: 5px;
-            background-color: #333;
-            color: white;
-            width: 35%;
-        }
+.axis-label {
+    font-size: 28px;
+    width: 100%;
+    height: 20px;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    font-family: "DejaVu Sans";
+}
 
-        .menu input:focus,
-        .menu select:focus {
-            outline: none;
-            border-color: #666;
-        }
-        .menu input:disabled {
-            background-color: #555;
-            color: #888;
-        }
+button:disabled {
+    cursor: auto;
+}
 
-        .dot-planet-container {
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            display: flex;
-        }
+button:enabled {
+    cursor: pointer;
+}
 
-        .dot-planet  {
-            cursor: pointer;
-            display: block;
-            border-radius: 50%;
-            padding: 15px;
-        }
-        .dot-planet:hover {
-            transform: scale(1.1);
-            /* Slightly enlarge the dot on hover */
-        }
+/* links */
+a {
+    color: #00bfff;
+    text-decoration: none;
+    font-weight: bold;
 
-        .dot-star {
-            background-color: yellow;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-top: 20px;
-            margin-bottom: 2px;
-        }
+}
 
-        .dot-star:hover {
-            transform: scale(1.1);
-            /* Slightly enlarge the star on hover */
-        }
+a:visited {
+    color: pink;
+    text-decoration: none;
+}
 
-        /* Scrollable Planet List */
-        .planet-list {
-            max-height: 400px;
-            overflow-y: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        /* Planet Item */
-        .planet-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 5px;
-            border-radius: 5px;
-            color: white;
-        }
-
-        .planet-name-label {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .menu-label {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 2px;
-            margin-top: 20px;
-        }
-
-        .axis-label {
-            font-size: 28px;
-            width: 100%;
-            height: 20px;
-            color: white;
-            text-align: center;
-            justify-content: center;
-            font-family: "DejaVu Sans";
-        }
-        button:disabled {
-            cursor: auto;
-        }
-
-        button:enabled {
-            cursor: pointer;
-        }
-
-        /* links */
-        a {
-            color: #00bfff;
-            text-decoration: none;
-            font-weight: bold;
-
-        }
-        a:visited {
-            color:pink;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: #1e90ff;
-            text-decoration: underline;
-        }
+a:hover {
+    color: #1e90ff;
+    text-decoration: underline;
+}
