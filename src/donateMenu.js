@@ -1,14 +1,14 @@
-import {InfoDisplay} from "./infoDisplay.js";
+import { InfoDisplay } from "./infoDisplay.js";
 
 
 export class DonateMenu extends InfoDisplay {
-    
-    constructor(contentName) {
-        super(contentName);
+
+    constructor(contentName, onMenuOpened, onMenuClosed) {
+        super(contentName, onMenuOpened, onMenuClosed);
         const BTCaddress = "bc1q4xr9agec3ldug0xezqxy252y3kvqmcz62xr6pm";
         this.donateBTCButton = new CopyWalletButton("BTC", BTCaddress);
         const ETHaddress = "0xaFE3DB130E71404Ed038397D25C26777d4EC8e4F";
-        this.donateETHButton = new CopyWalletButton("ETH",ETHaddress);
+        this.donateETHButton = new CopyWalletButton("ETH", ETHaddress);
     }
 
     setLanguage(language) {
