@@ -253,15 +253,16 @@ function init() {
     }
 
     if (!aboutMenu) {
-        aboutMenu = new InfoDisplay("about");
+        aboutMenu = new InfoDisplay("about", onMenuOpened, onMenuClosed);
     }
     if (!helpMenu) {
-        helpMenu = new InfoDisplay("manual");
+        helpMenu = new InfoDisplay("manual", onMenuOpened, onMenuClosed);
     }
 
     if (!donateMenu) {
-        donateMenu = new DonateMenu("donate");
+        donateMenu = new DonateMenu("donate", onMenuOpened, onMenuClosed);
     }
+
     // this needs to be done for the planet menu form canvas to work!
     starMenu.setTimes(lightcurveMenu.times);
     planetMenu.setTimes(lightcurveMenu.times);
@@ -333,6 +334,17 @@ function toggleAnimation() {
         restartAnimation(); // Restart the animation if it's paused
     }
 }
+
+function onMenuOpened() {
+    document.body.style.overflow = 'hidden';
+    pauseAnimation();
+}
+
+function onMenuClosed() {
+    document.body.style.overflow = 'auto';
+    restartAnimation();
+}
+
 
 function restartAnimation() {
     console.log("Restarting animation");

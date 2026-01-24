@@ -1,6 +1,6 @@
 
 export class InfoDisplay {
-    constructor(contentName) {
+    constructor(contentName, onMenuOpened, onMenuClosed) {
         this.activateButton = document.getElementById(contentName + "-button");
         // Initialize menu elements
         const content = document.getElementById(contentName + "-content")
@@ -17,6 +17,8 @@ export class InfoDisplay {
         this.closeButton.addEventListener("click", this.closeWindowListener);
 
         this.contentName = contentName;
+        this.onMenuOpened = onMenuOpened;
+        this.onMenuClosed = onMenuClosed;
 
     }
 
@@ -28,6 +30,7 @@ export class InfoDisplay {
 
     showContent(content, contentName) {
         console.log("Showing " + contentName);
+        this.onMenuOpened();
         content.classList.remove("hidden");
         content.focus()
 
@@ -57,6 +60,7 @@ export class InfoDisplay {
     }
 
     closeWindow(content) {
+        this.onMenuClosed();
         content.classList.add("hidden")
         content.blur()
         if (this.keydownListener) {
