@@ -1,55 +1,29 @@
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); black shadow is not really visible anyway*/
+    gap: 10px;
+    flex-direction: row;
+}
 
+.buttons-container button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
 
-        .bottom-banner {
-            position: sticky;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            color: white;
-            padding:10px;
-            /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); black shadow is not really visible anyway*/
-            gap: 10px;
-            bottom: 0;
-            left: 0;
-            z-index: 1000; /* Ensure it stays on top of other content */
-            margin-bottom: 0px;
-        }
+.buttons-container button:hover {
+    background-color: #555;
+}
 
-        .buttons-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding:10px;
-            /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); black shadow is not really visible anyway*/
-            gap: 10px;
-        }
+@media (width < 640px) {
 
-        @media (max-width: 600px) {
-     
-            .bottom-banner {
-                position: fixed;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                color: white;
-                padding:10px;
-                /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); black shadow is not really visible anyway*/
-                gap: 10px;
-                bottom: 0;
-                left: 0;
-                margin-bottom: 0px;
-            }
-        }
-        
-        .banner-button {
-            /*background-color: black;
-            color: white;*/
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        .banner-button:hover {
-            background-color: #555;
-        }
+    .buttons-container {
+        gap: 5px;
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+}
