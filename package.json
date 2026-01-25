@@ -16,7 +16,7 @@
     "build": "vite build && echo 'planetsinmotion.live' > dist/CNAME",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
-    "builddeploy": "npm run build && npm run deploy"
+    "builddeploy": "npm run build ; npm run deploy; date"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
