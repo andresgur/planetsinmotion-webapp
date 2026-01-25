@@ -76,9 +76,9 @@
 
 
             <div class="buttons-container">
-                <button id="manual-button" class="banner-button">Manual</button>
-                <button id="donate-button" class="banner-button">Support</button>
-                <button id="about-button" class="banner-button">About</button>
+                <button id="manual-button">Manual</button>
+                <button id="donate-button">Support</button>
+                <button id="about-button">About</button>
             </div>
         </div>
         <!-- Canvases -->
@@ -324,28 +324,36 @@
                 <label class="information-title">Support This Project &lt;3</label>
                 <label id="donate-text" class="information-content"></label>
                 <div class="donate-content">
-                    <img src="/icons/bitcoin-btc-logo.svg" class="crypto-logo">
-                    <p> Wallet Address</p>
-                    <div class="wallet-box">
-                        <code>bc1q4xr9agec3ldug0xezqxy252y3kvqmcz62xr6pm</code>
+                    <div class="wallet-info">
+                        <img src="/icons/bitcoin-btc-logo.svg" class="crypto-logo">
+                        <p>Wallet Address</p>
                     </div>
-                    <button class="planet-btns" id="copyBTCWalletAddressBtn" aria-label="Copy BTC Wallet Address">
-                        <img src="/icons/copy.png" alt="Copy BTC Icon" />
-                    </button>
-                    <div id="copy-feedback" class="copy-feedback">Copied!</div>
+                    <div class="wallet-info">
+                        <div class="wallet-box">
+                            <code>bc1q4xr9agec3ldug0xezqxy252y3kvqmcz62xr6pm</code>
+                        </div>
+                        <button class="planet-btns" id="copyBTCWalletAddressBtn" aria-label="Copy BTC Wallet Address">
+                            <img src="/icons/copy.png" alt="Copy BTC Icon" />
+                        </button>
+                        <div id="copy-feedback" class="copy-feedback">Copied!</div>
+                    </div>
                 </div>
 
                 <div class="donate-content">
-                    <img src="/icons/ethereum-eth-logo.svg" class="crypto-logo">
-                    <p>Wallet Address</p>
-                    <div class="wallet-box">
-                        <code>0xaFE3DB130E71404Ed038397D25C26777d4EC8e4F</code>
+                    <div class="wallet-info">
+                        <img src="/icons/ethereum-eth-logo.svg" class="crypto-logo">
+                        <p>Wallet Address</p>
                     </div>
-                    <button class="planet-btns" id="copyETHWalletAddressBtn" aria-label="Copy Wallet Address">
-                        <img src="/icons/copy.png" alt="Copy ETH Icon" />
-                    </button>
+                    <div class="wallet-info">
+                        <div class="wallet-box">
+                            <code>0xaFE3DB130E71404Ed038397D25C26777d4EC8e4F</code>
+                        </div>
+                        <button class="planet-btns" id="copyETHWalletAddressBtn" aria-label="Copy Wallet Address">
+                            <img src="/icons/copy.png" alt="Copy ETH Icon" />
+                        </button>
+                    </div>
                 </div>
-                <div class="donate-content">
+                <div class="wallet-info">
                     <img src="/icons/paypal_logo.png" class="crypto-logo">
                     <p>PayPal</p>
                     <img src="/icons/paypal_QR.png" style="width: 80px; height: 80px">
@@ -354,6 +362,7 @@
                 <label id="contribute-text" class="information-content"></label>
             </div>
         </div>
+    </div>
     </div>
 
     <!--bc1q4xr9agec3ldug0xezqxy252y3kvqmcz62xr6pm -->

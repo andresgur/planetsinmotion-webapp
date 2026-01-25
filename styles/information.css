@@ -1,81 +1,137 @@
+.information-form {
+    /* Add a shadow for better visibility */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+}
 
-        .information-form {
-            /* Add a shadow for better visibility */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
-            flex-direction: column;
-        }
+.information-container {
+    max-width: 950px;
+    width: 80%;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    color: white;
+    font-size: 18px;
+    border: 1px solid white;
+    border-radius: 5px;
+    flex-direction: column;
+    display: flex;
+    overflow-y: auto;
+    height: auto;
+    max-height: 700px;
+}
 
-        .information-container {
-            position: relative;
-            padding: 10px;
-            margin: 10px;
-            color: white;
-            font-size: 18px;
-            border: 1px solid white;
-            border-radius: 5px;
-            flex-direction: column;
-            display: flex;
-            width: 950px;
-            overflow-y: auto;
-            height: auto    ;
-            max-height: 700px;
-            align-items: center;
-        }
+.information-title {
+    text-align: center;
+    font-size: 26px;
+}
 
-        .information-title {
-            text-align: center;
-            font-size: 26px;
-        }
 
-        .information-content{ 
-            justify-content: left;
-            font-size: 20px;
-            text-align: center;
-        }
+.information-content {
+    justify-content: left;
+    font-size: 20px;
+    text-align: center;
+}
 
-        .donate-content {
-            gap: 10px;
-            align-items: center;
-            flex-direction:row ;
-            display: flex;
-            font-size: 20px;
-        }
 
-        .copy-feedback {
-            z-index: 1000;
-            position: absolute;
-            background-color: rgb(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 18px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            opacity: 0; /* Initially hidden */
-            transition: opacity 0.3s ease-in-out;
-            text-align: center;
-        }
-        
-        .copy-feedback.visible {
-            opacity: 1; /* Show the popup */
-        }
+.donate-content {
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    display: flex;
+    font-size: 20px;
+}
 
-    
 
-        .wallet-box {
-            display: inline-block; /* Ensure it behaves like an inline element */
-            padding: 5px 10px; /* Add padding inside the box */
-            border: 1px solid #ccc; /* Light gray border */
-            background-color: #f9f9f9; /* Light background color */
-            font-family: "Courier New", Courier, monospace; /* Monospaced font for code */
-            font-size: 16px; /* Adjust font size */
-            color: #333; /* Dark text color */
-            margin-right: 10px; /* Add space between the box and the button */
-            white-space: nowrap; /* Prevent text wrapping */
-            overflow: hidden; /* Hide overflow if the text is too long */
-            text-overflow: ellipsis; /* Add ellipsis for long text */
-        }
 
-        .crypto-logo {
-            width: 40px;
-            height: 40px;
-        }
+.wallet-box {
+    display: inline-block;
+    /* Ensure it behaves like an inline element */
+    padding: 5px 10px;
+    /* Add padding inside the box */
+    border: 1px solid #ccc;
+    /* Light gray border */
+    background-color: #f9f9f9;
+    /* Light background color */
+    font-family: "Courier New", Courier, monospace;
+    /* Monospaced font for code */
+    font-size: 16px;
+    /* Adjust font size */
+    color: #333;
+    /* Dark text color */
+    margin-right: 10px;
+    /* Add space between the box and the button */
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    overflow: hidden;
+    /* Hide overflow if the text is too long */
+    text-overflow: ellipsis;
+    /* Add ellipsis for long text */
+}
+
+.wallet-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.wallet-info p {
+    margin: 0;
+}
+
+@media (width < 640px) {
+    .information-container {
+        font-size: 16px;
+        margin: 0px;
+        /* Fit to viewport */
+    }
+
+    .information-title {
+        font-size: 20px;
+    }
+
+    .information-content {
+        font-size: 16px;
+    }
+
+    .donate-content {
+        flex-direction: column;
+        font-size: 16px;
+        margin-top: 10px;
+
+    }
+
+}
+
+
+.copy-feedback {
+    z-index: 1000;
+    position: absolute;
+    background-color: rgb(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 18px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    /* Initially hidden */
+    transition: opacity 0.3s ease-in-out;
+    text-align: center;
+}
+
+.copy-feedback.visible {
+    opacity: 1;
+    /* Show the popup */
+}
+
+
+
+.crypto-logo {
+    width: 40px;
+    height: 40px;
+}
