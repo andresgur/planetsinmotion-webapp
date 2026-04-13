@@ -8,7 +8,7 @@ import { Gcgs } from './constants.js';
  * @returns {number} - The true anomaly in radians.
  */
 export function trueAnomaly(e, E) {
-    return E.map(E_i => ( (2 * atan(sqrt((1 + e) / (1 - e)) * tan(E_i / 2))) % (2 * pi) ) );
+    return E.map(E_i => ((2 * atan(sqrt((1 + e) / (1 - e)) * tan(E_i / 2))) % (2 * pi)));
 }
 
 /**
@@ -46,6 +46,23 @@ export function keplerEquation(E, M, e) {
 }
 
 /**
+ * Computes the derivative of Kepler's Equation with respect to the eccentric anomaly. 
+ * This is used in numerical methods to solve Kepler's Equation, such as Newton's method.
+ *
+ * @param {number|Array} E - Eccentric anomaly (array-like or float).
+ * @param {number} e - Eccentricity.
+ * @returns {number|Array} - The derivative of Kepler's equation.
+ */
+
+export function keplerEquationDerivative(E, e) {
+    if (Array.isArray(E)) {
+        return E.map(E_i => 1 - e * cos(E_i));
+    } else {
+        return 1 - e * cos(E);
+    }
+}
+
+/**
  * Solves Kepler's Equation for the eccentric anomaly.
  *
  * @param {number} M - Mean anomaly.
@@ -55,26 +72,17 @@ export function keplerEquation(E, M, e) {
  * @returns {number} - The eccentric anomaly that solves Kepler's Equation.
  */
 export function solveEccentricAnomaly(M, e, err_tol = 0.001, max_N = 100) {
-    let a = 0;
-    let b = 2 * pi;
-    let err = (b - a) / 2;
-    let f_a = keplerEquation(a, M, e);
+
+    var E0 = M // Initial guess, for eccentricity = 0, E = M, so M is a good starting point
+    var E1;
 
     for (let i = 0; i < max_N; i++) {
-        const c = (a + b) / 2;
-        const f_c = keplerEquation(c, M, e);
-
-        if (f_c * f_a < 0) {
-            b = c;
-        } else {
-            a = c;
-            f_a = f_c;
+        E1 = E0 - keplerEquation(E0, M, e) / keplerEquationDerivative(E0, e);
+        if (Math.abs(E0 - E1) < err_tol) {
+            return E1;
         }
+        E0 = E1;
 
-        err = (b - a) / 2;
-        if (err < err_tol || f_c === 0) {
-            return c;
-        }
     }
     return null; // Return null if no solution is found
 }
