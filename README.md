@@ -28,3 +28,7 @@ the relationship between an exoplanet's orbit and its observed light curve.
 - JavaScript
 - HTML / CSS
 - Vite
+
+
+## Contributions 
+Contributions are welcome. The source code is available for viewing, modification, and non-commercial use. Commercial use, redistribution as a commercial product or service, or commercial exploitation of the code requires permission from the author.
